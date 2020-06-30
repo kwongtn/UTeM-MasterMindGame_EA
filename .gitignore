@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+
+# Self defined
+.vs
+out
+x86
+x64
+.VSCodeCounter
+misc/private/
