@@ -1,11 +1,52 @@
 // Mastermind-EvoComp.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include <iostream>
+#include "chromosome.h"
+#include "utils.h"
+
+array<int, GENE_SIZE> userSelection;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+  // TODO: Open output file
+
+
+  // TODO: Request user input, error catch on each attempt
+
+
+  // TODO: Initialize chromosomes
+
+
+  // TODO: Trigger to calculate fitness function
+
+
+  // TODO: Output stats
+
+
+  // TODO: Write stats and related values into file 
+
+
+  // TODO: Check for termination criteria
+
+
+  // TODO: Parent selection
+
+
+  // TODO: Crossover
+
+
+  // TODO: Mutation
+
+
+  // TODO: Select and forfeit chromosomes, replace with children
+
+  
+  // TODO: Loop
+
+  
+  // TODO: Show this if program terminates
+
+
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
