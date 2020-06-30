@@ -10,7 +10,7 @@ private:
 
 
 public:
-	void countFitness();
+	void countFitness(array<int, GENE_SIZE>);
 	double getFitness();
 	array<int, GENE_SIZE> getGenes();
 	int getGene(int);
@@ -34,8 +34,8 @@ Chromosome::Chromosome(array<int, GENE_SIZE> arr) {
 
 }
 
-// TODO: Count and set fitness function
-void Chromosome::countFitness() {
+// TODO: Count and set fitness function, with resect to the input array
+void Chromosome::countFitness(array<int, GENE_SIZE> arr) {
 
 }
 
