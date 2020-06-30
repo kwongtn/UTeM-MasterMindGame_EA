@@ -35,14 +35,14 @@ const array<string, GENE_SIZE> colourNames = {
 	"White"
 };
 
-/* 
-   If duplicates are accepted. 
-   if accepted, a chromosome can have more than one of the same gene.
+/*
+	 If duplicates are accepted.
+	 if accepted, a chromosome can have more than one of the same gene.
 */
 const bool DUP_GENE = false;
 
 /*
-  Rates of each function occurence used in this program.
+	Rates of each function occurence used in this program.
 	MUT_RATE -> Mutation Rate
 	CRSVR_RATE -> Crossover Rate
 */
