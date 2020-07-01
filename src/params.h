@@ -19,15 +19,6 @@ const int SEL_SIZE = 8;
 // Population size
 const int POP_SIZE = 10;
 
-// Gene size
-const int GENE_SIZE = 4;
-
-// Selection size
-const int SEL_SIZE = 8;
-
-// Population size
-const int POP_SIZE = 10;
-
 /*
  Define available characters, with the following conversion convention:
  - 1	: Red
