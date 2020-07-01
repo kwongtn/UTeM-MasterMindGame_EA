@@ -5,6 +5,7 @@
 #include <cstring>
 #include <array>
 #include <fstream>
+#include <limits>
 #include "libs/json.hpp"
 
 using namespace std;

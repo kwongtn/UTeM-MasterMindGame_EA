@@ -14,6 +14,7 @@ public:
 	double getFitness();
 	array<int, GENE_SIZE> getGenes();
 	int getGene(int);
+	string getGenesAsString();
 
 	~Chromosome();
 	Chromosome();
@@ -56,4 +57,13 @@ int Chromosome::getGene(int i)
 double Chromosome::getFitness() {
 
 	// Return fitness
+// Get genes as String
+string Chromosome::getGenesAsString() {
+	string myString = "";
+	for (int i = 0; i < genes.size(); i++) {
+		myString += genes[i] + " ";
+	}
+	myString.pop_back();
+
+	return myString;
 }

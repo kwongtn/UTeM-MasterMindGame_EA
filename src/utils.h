@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <time.h>
 #include <sstream>
+#include <chrono>
 
 using namespace std;
 
@@ -111,4 +112,31 @@ inline bool checkExistInArray(array<T, SEL_SIZE> myArray, T check) {
 		}
 	}
 	return false;
+}
+
+inline std::string returnDatetimeString(bool includeDashes = false)
+{
+	time_t t = time(nullptr);
+	struct tm nowTime;
+	localtime_s(&nowTime, &t);
+
+	std::stringstream ss;
+	ss << nowTime.tm_year + 1900;
+	if (includeDashes) { ss << "-"; }
+	ss << nowTime.tm_mon;
+	if (includeDashes) { ss << "-"; }
+	ss << nowTime.tm_mday;
+	if (includeDashes) { ss << "-"; }
+	ss << nowTime.tm_hour;
+	if (includeDashes) { ss << ":"; }
+	ss << nowTime.tm_min;
+	if (includeDashes) { ss << ":"; }
+	ss << nowTime.tm_sec;
+
+	return ss.str();
+}
+
+
+string returnString(json myString) {
+	return myString;
 }
