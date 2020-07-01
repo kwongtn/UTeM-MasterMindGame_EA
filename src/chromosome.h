@@ -6,7 +6,7 @@
 class Chromosome {
 private:
 	//declare an integer array with length GENE_SIZE
-	array<int,GENE_SIZE> genes;
+	array<int, GENE_SIZE> genes;
 	double fitness;
 
 
@@ -28,40 +28,34 @@ Chromosome::~Chromosome() {}
 // TODO: Constructor, will initialize with random values
 Chromosome::Chromosome() {
 	cout << "Initialized " << endl;
-	int randNum;
 	srand(time(NULL));
 
 	//since this current template array is 1 dimensional?
-	for (int i = 0; i < GENE_SIZE; i++)
-		{
-			randNum = rand() % 8 ;
-			genes[i] = randNum;
-		}
-		
+	for (int i = 0; i < GENE_SIZE; i++) {
+		genes[i] = rand() % SEL_SIZE;
+	}
+
 }
 
-// TODO: Constructor, will take the values and place into the genes variable within this object
+// Constructor, will take the values and place into the genes variable within this object
 Chromosome::Chromosome(array<int, GENE_SIZE> arr) {
-	
-	
-	for (int i = 0; i < GENE_SIZE; i++)
-		{
-			genes[i] = arr[i];
-		}
+	for (int i = 0; i < GENE_SIZE; i++) {
+		genes[i] = arr[i];
+	}
 }
 
 // TODO: Count and set fitness function, with resect to the input array
 void Chromosome::countFitness(array<int, GENE_SIZE> arr) {
 	int totalresult = 0;
-		for (int i = 0; i < GENE_SIZE; i++)
+	for (int i = 0; i < GENE_SIZE; i++)
+	{
+		if (arr[i] == genes[i])
 		{
-			if (arr[i] == genes[i])
-			{
-				totalresult = totalresult + 0.25;
-			}
-			//Not sure how to check for correct colour in wrong position
+			totalresult = totalresult + 0.25;
 		}
-		fitness = totalresult;
+		//Not sure how to check for correct colour in wrong position
+	}
+	fitness = totalresult;
 }
 
 // TODO: Get whole gene as array
