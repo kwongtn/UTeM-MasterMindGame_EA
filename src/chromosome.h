@@ -66,7 +66,10 @@ void Chromosome::countFitness(array<int, GENE_SIZE> arr) {
 
 // TODO: Get whole gene as array
 array<int, GENE_SIZE> Chromosome::getGenes() {
-
+	for (int i = 0; i < GENE_SIZE; i++)
+	{
+		cout << genes[i] << " ";
+	}
 	// Return array
 	return genes;
 }
@@ -74,9 +77,11 @@ array<int, GENE_SIZE> Chromosome::getGenes() {
 // TODO: Get specific gene index
 int Chromosome::getGene(int i)
 {
-
+	//assuming user will key in gene number 'i'
+	int gene;
+	gene= genes[i];
 	// Return the gene at that position
-	return 0;
+	return gene;
 }
 
 // TODO: Get fitness
