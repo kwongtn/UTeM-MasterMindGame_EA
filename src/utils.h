@@ -30,7 +30,6 @@ inline void clearScreen() {
 }
 
 inline int timeRand() {
-	srand((unsigned int)time(NULL));
 	return rand();
 }
 

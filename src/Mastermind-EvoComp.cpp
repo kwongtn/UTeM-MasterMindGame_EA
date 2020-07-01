@@ -64,6 +64,7 @@ double avgFitness(array<Chromosome, POP_SIZE> chrs) {
 int main()
 {
 
+	srand((unsigned int)time(NULL));
 	// Open output file
 	ofstream outputCSV, outputJSON;
 	string fileName = "../results/" + returnDatetimeString();
