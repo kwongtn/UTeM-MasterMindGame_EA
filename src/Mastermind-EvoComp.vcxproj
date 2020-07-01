@@ -143,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="chromosome.h" />
+    <ClInclude Include="libs\json.hpp" />
     <ClInclude Include="params.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

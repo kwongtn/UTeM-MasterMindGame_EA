@@ -5,8 +5,10 @@
 #include <cstring>
 #include <array>
 #include <fstream>
+#include "libs/json.hpp"
 
 using namespace std;
+using json = nlohmann::json;
 
 /*
  Define available characters, with the following conversion convention:
@@ -39,7 +41,7 @@ const array<string, GENE_SIZE> colourNames = {
 	 If duplicates are accepted.
 	 if accepted, a chromosome can have more than one of the same gene.
 */
-const bool DUP_GENE = false;
+const bool DUP_GENE = true;
 
 /*
 	Rates of each function occurence used in this program.
