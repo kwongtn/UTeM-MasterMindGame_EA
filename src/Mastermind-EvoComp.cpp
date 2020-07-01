@@ -6,6 +6,7 @@
 #include "chromosome.h"
 
 array<int, GENE_SIZE> userSelection;
+unsigned short int generationCount = 0;
 
 json stats = {};
 
@@ -136,7 +137,7 @@ int main()
 
 	// Output inputted values
 	clearScreen();
-	cout << "The current inputs are: " << endl;
+	cout << "Target values: " << endl;
 	for (int i = 0; i < GENE_SIZE; i++) {
 		cout << setw(10) << left << userSelection[i];
 	}
@@ -195,6 +196,15 @@ int main()
 		<< returnString(stats[generationCount]["bestChr"])
 		<< endl;
 
+	// Check for termination criteria
+	if (stats[generationCount]["maxFitness"] == 1) {
+		cout << "Termination criteria: Achieved Target Sequence." << endl;
+		// TODO: Set breaks
+	}
+	else if (generationCount == MAX_CYCLES) {
+		cout << "Termination criteria: Achieved maximum cycles of " << MAX_CYCLES << ". " << endl;
+		// TODO: Set breaks
+	}
 
 	// TODO: Parent selection
 

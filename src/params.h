@@ -21,6 +21,11 @@ const int SEL_SIZE = 8;
 const int POP_SIZE = 10;
 
 /*
+  Terminate when reached this number of cycles.
+*/
+const int MAX_CYCLES = 100;
+
+/*
  Define available characters, with the following conversion convention:
  - 1	: Red
  - 2	: Green
