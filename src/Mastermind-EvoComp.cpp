@@ -206,14 +206,39 @@ int main()
 		// TODO: Set breaks
 	}
 
-	// TODO: Parent selection
+	// Parent selection
+	array<int, 2> parentIndex;
+	parentIndex[0] = rand() % POP_SIZE;
+	while (true) {
+		parentIndex[1] = rand() % POP_SIZE;
+		if (parentIndex[1] != parentIndex[0]) {
+			break;
+		}
+	}
 
+	array<array<int, GENE_SIZE>, 2> childrenGenes;
+	childrenGenes[0] = chromosomes[parentIndex[0]].getGenes();
+	childrenGenes[1] = chromosomes[parentIndex[1]].getGenes();
 
-	// TODO: Crossover
+	// Crossover
+	if (((rand() % 101) / 100) < CRSVR_RATE) {
+		int crossoverPoint = rand() % GENE_SIZE;
+		for (int i = crossoverPoint; i < GENE_SIZE; i++) {
+			int temp = childrenGenes[0][i];
+			childrenGenes[0][i] = childrenGenes[1][i];
+			childrenGenes[1][i] = temp;
+		}
 
+	}
 
-	// TODO: Mutation
+	// Mutation
+	for (int i = 0; i < childrenGenes.size(); i++) {
+		if (((rand() % 101) / 100) < MUTATION_RATE) {
+			childrenGenes[i][rand() % GENE_SIZE] = colors[rand() % SEL_SIZE];
 
+		}
+
+	}
 
 	// TODO: Select and forfeit chromosomes, replace with children
 
