@@ -91,26 +91,19 @@ void Chromosome::calcFitness(array<int, GENE_SIZE> arr) {
 
 }
 
-// TODO: Get whole gene as array
+// Get whole gene as array
 array<int, GENE_SIZE> Chromosome::getGenes() {
-
-	// Return array
 	return genes;
 }
 
-// TODO: Get specific gene index
-int Chromosome::getGene(int i)
-{
-
-	// Return the gene at that position
-	return 0;
+// Get specific gene index
+int Chromosome::getGene(int i){
+	return genes[i];
 }
 
-// TODO: Get fitness
+// Get fitness
 double Chromosome::getFitness() {
-
-	// Return fitness
-	return 0.01;
+	return fitness;
 }
 
 // Get genes as String
