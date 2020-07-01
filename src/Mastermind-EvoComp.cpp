@@ -56,11 +56,25 @@ int main()
 		}
 	}
 
-	// TODO: Initialize chromosomes
+	// Output inputted values
+	clearScreen();
+	cout << "The current inputs are: " << endl;
+	for (int i = 0; i < GENE_SIZE; i++) {
+		cout << setw(10) << left << userSelection[i];
+	}
+	cout << endl;
+	for (int i = 0; i < GENE_SIZE; i++) {
+		cout << setw(10) << left << colourNames[userSelection[i]];
+	}
+	cout << endl;
 
+	// Initialize chromosomes with random values
+	array<Chromosome, POP_SIZE> chromosomes;
 
-	// TODO: Trigger to calculate fitness function
-
+	// Trigger to calculate fitness function
+	for (int i = 0; i < POP_SIZE; i++) {
+		chromosomes[i].countFitness(userSelection);
+	}
 
 	// TODO: Output stats
 
