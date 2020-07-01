@@ -71,3 +71,34 @@ inline int inputInt(bool prompter = true, bool forceInput = true) {
 	return i;
 
 }
+
+inline bool decider(std::string custString = "Your selection (y / n): ") {
+	bool x = true;
+	std::string selection;
+	while (true) {
+		cout << custString;
+		try {
+			getline(cin, selection);
+			if (selection == "y" || selection == "Y") {
+				x = true;
+				break;
+			}
+			else if (selection == "n" || selection == "N") {
+				x = false;
+				break;
+			}
+			else {
+				throw "Error";
+			}
+			if (cin.fail() || selection != "y" || selection != "Y" || selection != "n" || selection != "N") {
+				throw "Error";
+			}
+		}
+		catch (...) {
+			cout << "Please enter a valid character." << endl;
+			pause();
+		}
+	}
+	return x;
+
+}
