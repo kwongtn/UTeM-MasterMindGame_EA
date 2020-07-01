@@ -5,10 +5,25 @@
 #include <cstring>
 #include <array>
 #include <fstream>
+#include <limits>
 #include "libs/json.hpp"
 
 using namespace std;
 using json = nlohmann::json;
+
+// Gene size
+const int GENE_SIZE = 4;
+
+// Selection size
+const int SEL_SIZE = 8;
+
+// Population size
+const int POP_SIZE = 10;
+
+/*
+  Terminate when reached this number of cycles.
+*/
+const int MAX_CYCLES = 100;
 
 /*
  Define available characters, with the following conversion convention:
@@ -22,11 +37,11 @@ using json = nlohmann::json;
  - 8	: White
 */
 
-const array<int, GENE_SIZE> colors = {
-	1, 2, 3, 4, 5, 6, 7, 8
+const array<int, SEL_SIZE> colors = {
+	0, 1, 2, 3, 4, 5, 6, 7
 };
 
-const array<string, GENE_SIZE> colourNames = {
+const array<string, SEL_SIZE> colourNames = {
 	"Red",
 	"Green",
 	"Blue",
@@ -51,4 +66,5 @@ const bool DUP_GENE = true;
 const double MUTATION_RATE = 0.5;
 const double CRSVR_RATE = 0.5;
 
-const int GENE_SIZE = 8;
+// The number of crossover points in a single chromosome
+const int CRSVR_COUNT = 1;

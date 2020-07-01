@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <time.h>
 #include <sstream>
+#include <chrono>
 
 using namespace std;
 
@@ -29,7 +30,6 @@ inline void clearScreen() {
 }
 
 inline int timeRand() {
-	srand((unsigned int)time(NULL));
 	return rand();
 }
 
@@ -70,4 +70,72 @@ inline int inputInt(bool prompter = true, bool forceInput = true) {
 
 	return i;
 
+}
+
+inline bool decider(std::string custString = "Your selection (y / n): ") {
+	bool x = true;
+	std::string selection;
+	while (true) {
+		cout << custString;
+		try {
+			getline(cin, selection);
+			if (selection == "y" || selection == "Y") {
+				x = true;
+				break;
+			}
+			else if (selection == "n" || selection == "N") {
+				x = false;
+				break;
+			}
+			else {
+				throw "Error";
+			}
+			if (cin.fail() || selection != "y" || selection != "Y" || selection != "n" || selection != "N") {
+				throw "Error";
+			}
+		}
+		catch (...) {
+			cout << "Please enter a valid character." << endl;
+			pause();
+		}
+	}
+	return x;
+
+}
+
+template <typename T>
+inline bool checkExistInArray(array<T, SEL_SIZE> myArray, T check) {
+	for (int i = 0; i < myArray.size(); i++) {
+		if (myArray[i] == check) {
+			return true;
+		}
+	}
+	return false;
+}
+
+inline std::string returnDatetimeString(bool includeDashes = false)
+{
+	time_t t = time(nullptr);
+	struct tm nowTime;
+	localtime_s(&nowTime, &t);
+
+	std::stringstream ss;
+	ss << nowTime.tm_year + 1900;
+	if (includeDashes) { ss << "-"; }
+	ss << nowTime.tm_mon;
+	if (includeDashes) { ss << "-"; }
+	ss << nowTime.tm_mday;
+	if (includeDashes) { ss << "-"; }
+	ss << nowTime.tm_hour;
+	if (includeDashes) { ss << ":"; }
+	ss << nowTime.tm_min;
+	if (includeDashes) { ss << ":"; }
+	ss << nowTime.tm_sec;
+
+	return ss.str();
+}
+
+
+string returnString(json myString) {
+	return myString;
 }
