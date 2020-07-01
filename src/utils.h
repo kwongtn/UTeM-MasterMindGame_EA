@@ -136,6 +136,6 @@ inline std::string returnDatetimeString(bool includeDashes = false)
 }
 
 
-string returnString(json myString) {
+inline string returnString(json myString) {
 	return myString;
 }
