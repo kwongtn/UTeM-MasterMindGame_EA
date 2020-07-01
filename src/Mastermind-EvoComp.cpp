@@ -56,6 +56,33 @@ int main()
 		}
 	}
 
+	// TODO: Initialize chromosomes
+
+				cout << endl << endl;
+
+				// Get user inputs
+				cout << "Please input " << GENE_SIZE << " colours for your selection. ";
+				cout << "For gene " << i + 1 << ": ";
+				int tempInt = inputInt();
+				if (!checkExistInArray(colors, tempInt)) {
+					cout << "Invalid value, please re-input." << endl;
+					pause();
+				}
+				else {
+					userSelection[i] = tempInt;
+					break;
+				}
+
+			}
+		}
+	}
+	else {
+		// Randomly initialize values
+		for (int i = 0; i < GENE_SIZE; i++) {
+			userSelection[i] = timeRand() % GENE_SIZE;
+		}
+	}
+
 	// Output inputted values
 	clearScreen();
 	cout << "The current inputs are: " << endl;
