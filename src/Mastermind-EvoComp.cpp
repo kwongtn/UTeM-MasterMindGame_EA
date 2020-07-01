@@ -207,17 +207,26 @@ int main()
 	}
 
 	// Parent selection
-	array<int, 2> parents;
-	parents[0] = rand() % POP_SIZE;
+	array<int, 2> parentIndex;
+	parentIndex[0] = rand() % POP_SIZE;
 	while (true) {
-		parents[1] = rand() % POP_SIZE;
-		if (parents[1] != parents[0]) {
+		parentIndex[1] = rand() % POP_SIZE;
+		if (parentIndex[1] != parentIndex[0]) {
 			break;
 		}
 	}
 
-	// TODO: Crossover
+	array<array<int, GENE_SIZE>, 2> parentGenes;
+	parentGenes[0] = chromosomes[parentIndex[0]].getGenes();
+	parentGenes[1] = chromosomes[parentIndex[1]].getGenes();
 
+	// Crossover
+	int crossoverPoint = rand() % GENE_SIZE;
+	for (int i = crossoverPoint; i < GENE_SIZE; i++) {
+		int temp = parentGenes[0][i];
+		parentGenes[0][i] = parentGenes[1][i];
+		parentGenes[1][i] = temp;
+	}
 
 	// TODO: Mutation
 
