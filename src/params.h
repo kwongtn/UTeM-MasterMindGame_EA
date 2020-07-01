@@ -10,6 +10,12 @@
 using namespace std;
 using json = nlohmann::json;
 
+// Gene size
+const int GENE_SIZE = 8;
+
+// Population size
+const int POP_SIZE = 10;
+
 /*
  Define available characters, with the following conversion convention:
  - 1	: Red
@@ -51,4 +57,5 @@ const bool DUP_GENE = true;
 const double MUTATION_RATE = 0.5;
 const double CRSVR_RATE = 0.5;
 
-const int GENE_SIZE = 8;
+// The number of crossover points in a single chromosome
+const int CRSVR_COUNT = 1;
