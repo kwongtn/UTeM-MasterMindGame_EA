@@ -9,7 +9,10 @@
 using namespace std;
 
 // Gene size
-const int GENE_SIZE = 8;
+const int GENE_SIZE = 4;
+
+// Selection size
+const int SEL_SIZE = 8;
 
 // Population size
 const int POP_SIZE = 10;
@@ -26,11 +29,11 @@ const int POP_SIZE = 10;
  - 8	: White
 */
 
-const array<int, GENE_SIZE> colors = {
-	1, 2, 3, 4, 5, 6, 7, 8
+const array<int, SEL_SIZE> colors = {
+	0, 1, 2, 3, 4, 5, 6, 7
 };
 
-const array<string, GENE_SIZE> colourNames = {
+const array<string, SEL_SIZE> colourNames = {
 	"Red",
 	"Green",
 	"Blue",
