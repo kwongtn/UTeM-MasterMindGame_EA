@@ -27,7 +27,7 @@ Chromosome::~Chromosome() {}
 
 // TODO: Constructor, will initialize with random values
 Chromosome::Chromosome() {
-
+	cout << "Initialized " << endl;
 }
 
 // TODO: Constructor, will take the values and place into the genes variable within this object
@@ -44,6 +44,7 @@ void Chromosome::countFitness(array<int, GENE_SIZE> arr) {
 array<int, GENE_SIZE> Chromosome::getGenes() {
 
 	// Return array
+	return genes;
 }
 
 // TODO: Get specific gene index
@@ -51,12 +52,16 @@ int Chromosome::getGene(int i)
 {
 
 	// Return the gene at that position
+	return 0;
 }
 
 // TODO: Get fitness
 double Chromosome::getFitness() {
 
 	// Return fitness
+	return 0.01;
+}
+
 // Get genes as String
 string Chromosome::getGenesAsString() {
 	string myString = "";
