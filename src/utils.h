@@ -102,3 +102,13 @@ inline bool decider(std::string custString = "Your selection (y / n): ") {
 	return x;
 
 }
+
+template <typename T>
+inline bool checkExistInArray(array<T, SEL_SIZE> myArray, T check) {
+	for (int i = 0; i < myArray.size(); i++) {
+		if (myArray[i] == check) {
+			return true;
+		}
+	}
+	return false;
+}

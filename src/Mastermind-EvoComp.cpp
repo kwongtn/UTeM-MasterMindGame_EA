@@ -12,8 +12,49 @@ int main()
 	// TODO: Open output file
 
 
-	// TODO: Request user input, error catch on each attempt
+	// Request user input, error catch on each attempt
+	cout << "Do you want to input selection? If no, a random sequence will be selected." << endl;
+	if (decider()) {
+		// Generate menu and user inputs, showing current selected ones.
+		for (int i = 0; i < GENE_SIZE; i++) {
+			while (true) {
+				clearScreen();
+				cout << "Current Available Selections:" << endl;
+				for (int j = 0; j < colors.size(); j++) {
+					cout << setw(5) << left << colors[j] << setw(20) << left << colourNames[j] << endl;
+				}
 
+				cout << endl;
+
+				cout << "Current selection : ";
+				for (int k = 0; k < i; k++) {
+					cout << colors[userSelection[k]] << "(" << colourNames[userSelection[k]] << "), ";
+				}
+
+				cout << endl << endl;
+
+				// Get user inputs
+				cout << "Please input " << GENE_SIZE << " colours for your selection. ";
+				cout << "For gene " << i + 1 << ": ";
+				int tempInt = inputInt();
+				if (!checkExistInArray(colors, tempInt)) {
+					cout << "Invalid value, please re-input." << endl;
+					pause();
+				}
+				else {
+					userSelection[i] = tempInt;
+					break;
+				}
+
+			}
+		}
+	}
+	else {
+		// Randomly initialize values
+		for (int i = 0; i < GENE_SIZE; i++) {
+			userSelection[i] = timeRand() % GENE_SIZE;
+		}
+	}
 
 	// TODO: Initialize chromosomes
 
