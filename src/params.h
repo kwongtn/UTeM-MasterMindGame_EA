@@ -8,6 +8,12 @@
 
 using namespace std;
 
+// Gene size
+const int GENE_SIZE = 8;
+
+// Population size
+const int POP_SIZE = 10;
+
 /*
  Define available characters, with the following conversion convention:
  - 1	: Red
@@ -39,7 +45,7 @@ const array<string, GENE_SIZE> colourNames = {
 	 If duplicates are accepted.
 	 if accepted, a chromosome can have more than one of the same gene.
 */
-const bool DUP_GENE = false;
+const bool DUP_GENE = true;
 
 /*
 	Rates of each function occurence used in this program.
@@ -49,4 +55,5 @@ const bool DUP_GENE = false;
 const double MUTATION_RATE = 0.5;
 const double CRSVR_RATE = 0.5;
 
-const int GENE_SIZE = 8;
+// The number of crossover points in a single chromosome
+const int CRSVR_COUNT = 1;
