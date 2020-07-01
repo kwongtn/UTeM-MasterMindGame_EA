@@ -206,8 +206,15 @@ int main()
 		// TODO: Set breaks
 	}
 
-	// TODO: Parent selection
-
+	// Parent selection
+	array<int, 2> parents;
+	parents[0] = rand() % POP_SIZE;
+	while (true) {
+		parents[1] = rand() % POP_SIZE;
+		if (parents[1] != parents[0]) {
+			break;
+		}
+	}
 
 	// TODO: Crossover
 
