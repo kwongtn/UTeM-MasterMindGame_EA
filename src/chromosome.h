@@ -3,7 +3,7 @@
 #include "params.h"
 #include "utils.h"
 
-// TODO: Declare chromosome object and other required data
+// Declare chromosome object and other required data
 class Chromosome {
 private:
 	//declare an integer array with length GENE_SIZE
@@ -26,7 +26,7 @@ public:
 // Destructor
 Chromosome::~Chromosome() {}
 
-// TODO: Constructor, will initialize with random values
+// Constructor, will initialize with random values
 Chromosome::Chromosome() {
 	srand(time(NULL));
 
@@ -54,7 +54,7 @@ Chromosome::Chromosome(array<int, GENE_SIZE> arr) {
 
 }
 
-// TODO: Count and set fitness function, with resect to the input array
+// Count and set fitness function, with resect to the input array
 void Chromosome::calcFitness(array<int, GENE_SIZE> arr) {
 	// Places the count of each possible selection into the array
 	array<int, SEL_SIZE> counts = { 0 };
@@ -64,13 +64,12 @@ void Chromosome::calcFitness(array<int, GENE_SIZE> arr) {
 
 	/*
 		 Calculates and count the values with the correct color in correct position.
-		 If a target is hit the fitness value is added, counts are decreased and that cell is replaced by -1.
+		 If a target is hit the fitness value is added, counts are decreased.
 	*/
 	for (int i = 0; i < arr.size(); i++) {
 		if (arr[i] == genes[i]) {
 			fitness += (1 / GENE_SIZE);
 			counts[arr[i]]--;
-			arr[i] = -1;
 		}
 	}
 
