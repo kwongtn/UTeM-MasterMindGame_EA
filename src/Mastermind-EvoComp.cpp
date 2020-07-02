@@ -30,6 +30,7 @@ int bestFitnessIndex(array<Chromosome, POP_SIZE> chrs) {
 
 	for (int i = 0; i < chrs.size(); i++) {
 		if (chrs[i].getFitness() > bestFitness) {
+			bestFitness = chrs[i].getFitness();
 			bestFitnessIndex = i;
 		}
 	}
@@ -42,7 +43,7 @@ double minFitness(array<Chromosome, POP_SIZE> chrs) {
 	double minVal = numeric_limits<double>::max();
 
 	for (Chromosome chr : chrs) {
-		if (chr.getFitness() > minVal) {
+		if (chr.getFitness() < minVal) {
 			minVal = chr.getFitness();
 		}
 	}
