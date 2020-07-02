@@ -104,7 +104,7 @@ int main()
 	}
 
 	cout << endl;
-	
+
 	std::chrono::steady_clock::time_point begin;
 
 	// Request user input, error catch on each attempt
@@ -240,7 +240,7 @@ int main()
 
 		// Check for termination criteria
 		if (stats[generationCount]["maxFitness"] == 1) {
-			cout << "\n\nTermination criteria: Achieved Target Sequence at generation " 
+			cout << "\n\nTermination criteria: Achieved Target Sequence at generation "
 				<< generationCount << ". " << endl;
 			break;
 		}
