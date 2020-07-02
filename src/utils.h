@@ -79,6 +79,7 @@ inline bool decider(std::string custString = "Your selection (y / n): ") {
 		cout << custString;
 		try {
 			getline(cin, selection);
+			if (selection == "") { return true; }
 			if (selection == "y" || selection == "Y") {
 				x = true;
 				break;
