@@ -155,6 +155,18 @@ int main()
 			// cout << chromosomes[i].getFitness() << endl;
 		}
 
+
+		// Generate chromosome list and write into json
+		json chrList = {};
+		for (int i = 0; i < POP_SIZE; i++) {
+			chromosomes[i].getGenesAsString();
+			chrList.push_back({
+				{"chrString", chromosomes[i].getGenesAsString()},
+				{"fitness", chromosomes[i].getFitness()}
+				});
+		}
+
+
 	// Write stats to variable
 	stats.push_back({
 		{"gen", generationCount},
