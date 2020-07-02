@@ -251,12 +251,25 @@ int main()
 
 		// Parent selection
 		array<int, 2> parentIndex;
-		parentIndex[0] = rand() % POP_SIZE;
-		while (true) {
-			parentIndex[1] = rand() % POP_SIZE;
-			if (parentIndex[1] != parentIndex[0]) {
-				break;
+		for (int i = 0; i < 2; i++) {
+			int tournament[2];
+			tournament[0] = rand() % POP_SIZE;
+			while (true) {
+				tournament[1] = rand() % POP_SIZE;
+				if (tournament[0] != tournament[1]) {
+					break;
+				}
 			}
+
+			if (chromosomes[tournament[0]].getFitness() > chromosomes[tournament[1]].getFitness()) {
+				parentIndex[i] = tournament[0];
+			}
+			else {
+				parentIndex[i] = tournament[1];
+
+			}
+
+
 		}
 
 		array<array<int, GENE_SIZE>, 2> childrenGenes;
