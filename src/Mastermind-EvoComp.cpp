@@ -186,6 +186,9 @@ int main()
 		printLine(15 + (25 * 4));
 
 	}
+	else {
+		cout << "Program running, " << endl;
+	}
 
 	while (true) {
 		// Generate chromosome list and write into json
@@ -220,6 +223,9 @@ int main()
 				<< endl;
 
 		}
+		else {
+			cout << "\rGeneration " << generationCount << ".";
+		}
 
 		// Write stats and related values into csv file 
 		if (generationCount == 0) {
@@ -234,12 +240,12 @@ int main()
 
 		// Check for termination criteria
 		if (stats[generationCount]["maxFitness"] == 1) {
-			cout << "Termination criteria: Achieved Target Sequence at generation " 
+			cout << "\n\nTermination criteria: Achieved Target Sequence at generation " 
 				<< generationCount << ". " << endl;
 			break;
 		}
 		else if (generationCount == MAX_CYCLES) {
-			cout << "Termination criteria: Achieved maximum cycles of " << MAX_CYCLES << ". " << endl;
+			cout << "\n\nTermination criteria: Achieved maximum cycles of " << MAX_CYCLES << ". " << endl;
 			break;
 		}
 
@@ -311,7 +317,7 @@ int main()
 	cout << endl;
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 	cout << "Runtime: " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) / 1000000.0 << " seconds. " << endl << endl;
-	cout << "Program end. Please type \"e\" to realy exit the program.";
+	cout << "Program end. Please type \"e\" to realy exit the program: ";
 	getline(cin, temp, 'e');
 	pause();
 

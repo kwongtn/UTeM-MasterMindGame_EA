@@ -71,4 +71,4 @@ const double CRSVR_RATE = 0.5;
 const int CRSVR_COUNT = 1;
 
 // Whether to output intermediatery messages
-const bool OUTPUT = false;
+const bool OUTPUT = true;
