@@ -6,6 +6,7 @@
 #include <array>
 #include <fstream>
 #include <limits>
+#include <vector>
 #include "libs/json.hpp"
 
 using namespace std;

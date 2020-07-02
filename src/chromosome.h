@@ -10,24 +10,24 @@ private:
 	array<int, GENE_SIZE> genes;
 	array<int, SEL_SIZE> selectionCounts = { 0 };
 	double fitness = 0.00;
+	void calcFitness(array<int, GENE_SIZE>);
 
 public:
-	void calcFitness(array<int, GENE_SIZE>);
 	double getFitness();
 	array<int, GENE_SIZE> getGenes();
 	int getGene(int);
 	string getGenesAsString();
 
 	~Chromosome();
-	Chromosome();
 	Chromosome(array<int, GENE_SIZE>);
+	Chromosome(array<int, GENE_SIZE>, array<int, GENE_SIZE>);
 };
 
 // Destructor
 Chromosome::~Chromosome() {}
 
 // Constructor, will initialize with random values
-Chromosome::Chromosome() {
+Chromosome::Chromosome(array<int, GENE_SIZE> solArr) {
 	for (int i = 0; i < GENE_SIZE; i++) {
 		genes[i] = rand() % SEL_SIZE;
 	}
@@ -37,19 +37,23 @@ Chromosome::Chromosome() {
 		selectionCounts[genes[i]]++;
 	}
 
+	// Calculate fitness
+	calcFitness(solArr);
 }
 
 // Constructor, will take the values and place into the genes variable within this object
-Chromosome::Chromosome(array<int, GENE_SIZE> arr) {
+Chromosome::Chromosome(array<int, GENE_SIZE> solArr, array<int, GENE_SIZE> sourceArr) {
 	for (int i = 0; i < GENE_SIZE; i++) {
-		genes[i] = arr[i];
+		genes[i] = sourceArr[i];
 	}
 
 	// Calculate the number of occurences of each color
-	for (int i = 0; i < arr.size(); i++) {
-		selectionCounts[arr[i]]++;
+	for (int i = 0; i < sourceArr.size(); i++) {
+		selectionCounts[sourceArr[i]]++;
 	}
 
+	// Calculate fitness
+	calcFitness(solArr);
 }
 
 // Count and set fitness function, with resect to the input array
@@ -94,7 +98,7 @@ array<int, GENE_SIZE> Chromosome::getGenes() {
 }
 
 // Get specific gene index
-int Chromosome::getGene(int i){
+int Chromosome::getGene(int i) {
 	return genes[i];
 }
 

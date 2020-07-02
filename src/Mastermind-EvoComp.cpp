@@ -11,7 +11,7 @@ unsigned short int generationCount = 0;
 json stats = {};
 
 // Function to calculate and return max fitness in the chromosomes
-double maxFitness(array<Chromosome, POP_SIZE> chrs) {
+double maxFitness(vector<Chromosome> chrs) {
 	double maxVal = numeric_limits<double>::min();
 
 	for (Chromosome chr : chrs) {
@@ -24,7 +24,7 @@ double maxFitness(array<Chromosome, POP_SIZE> chrs) {
 }
 
 // Function to calculate and return index of the best chromosome
-int bestFitnessIndex(array<Chromosome, POP_SIZE> chrs) {
+int bestFitnessIndex(vector<Chromosome> chrs) {
 	double bestFitness = numeric_limits<double>::min();
 	int bestFitnessIndex = -1;
 
@@ -39,7 +39,7 @@ int bestFitnessIndex(array<Chromosome, POP_SIZE> chrs) {
 }
 
 // Function to calculate and return index of the worst chromosome
-int worstFitnessIndex(array<Chromosome, POP_SIZE> chrs) {
+int worstFitnessIndex(vector<Chromosome> chrs) {
 	double worstFitness = numeric_limits<double>::max();
 	int worstFitnessIndex = -1;
 
@@ -54,7 +54,7 @@ int worstFitnessIndex(array<Chromosome, POP_SIZE> chrs) {
 }
 
 // Function to calculate and return min fitness in the chromsomes
-double minFitness(array<Chromosome, POP_SIZE> chrs) {
+double minFitness(vector<Chromosome> chrs) {
 	double minVal = numeric_limits<double>::max();
 
 	for (Chromosome chr : chrs) {
@@ -67,7 +67,7 @@ double minFitness(array<Chromosome, POP_SIZE> chrs) {
 }
 
 // Function to calculate and return average fitness in the chromosomes
-double avgFitness(array<Chromosome, POP_SIZE> chrs) {
+double avgFitness(vector<Chromosome> chrs) {
 	double totalFitness = 0;
 
 	for (Chromosome chr : chrs) {
@@ -150,7 +150,10 @@ int main()
 	}
 
 	// Initialize chromosomes with random values
-	array<Chromosome, POP_SIZE> chromosomes;
+	vector<Chromosome> chromosomes;
+	for (int i = 0; i < POP_SIZE; i++) {
+		chromosomes.push_back(userSelection);
+	}
 
 	// Output inputted values
 	clearScreen();
@@ -165,14 +168,6 @@ int main()
 	cout << endl;
 
 	while (true) {
-		// Trigger to calculate fitness function
-		for (int i = 0; i < POP_SIZE; i++) {
-			// cout << "Chromosome: " << chromosomes[i].getGenesAsString() << ", Fitness: ";
-			chromosomes[i].calcFitness(userSelection);
-			// cout << chromosomes[i].getFitness() << endl;
-		}
-
-
 		// Generate chromosome list and write into json
 		json chrList = {};
 		for (int i = 0; i < POP_SIZE; i++) {
@@ -286,11 +281,11 @@ int main()
 		}
 
 		// Select and forfeit chromosomes, replace with children. The worst and one other random chromosome will be replaced.
-		chromosomes[worstFitnessIndex(chromosomes)] = Chromosome(childrenGenes[0]);
+		chromosomes[worstFitnessIndex(chromosomes)] = Chromosome(userSelection, childrenGenes[0]);
 		while (true) {
 			int index = rand() % POP_SIZE;
 			if (index != worstFitnessIndex(chromosomes)) {
-				chromosomes[index] = Chromosome(childrenGenes[1]);
+				chromosomes[index] = Chromosome(userSelection, childrenGenes[1]);
 				break;
 			}
 		}
