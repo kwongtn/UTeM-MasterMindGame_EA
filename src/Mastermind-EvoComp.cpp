@@ -7,6 +7,7 @@
 
 array<int, GENE_SIZE> userSelection;
 unsigned short int generationCount = 0;
+double maxFitnessHist = numeric_limits<double>::min();
 
 json stats = {};
 
@@ -19,6 +20,9 @@ double maxFitness(vector<Chromosome> chrs) {
 			maxVal = chr.getFitness();
 		}
 	}
+
+	// To look into historical data too
+	maxVal > maxFitnessHist ? maxFitnessHist = maxVal : 0;
 
 	return maxVal;
 }
@@ -229,11 +233,12 @@ int main()
 
 		// Write stats and related values into csv file 
 		if (generationCount == 0) {
-			outputCSV << "Generation, MinFitness, MaxFitness, AvgFitness, Best Chromosome" << endl;
+			outputCSV << "Generation, MinFitness, MaxFitness, HistoricalMaxFitness, AvgFitness, Best Chromosome" << endl;
 		}
 		outputCSV << generationCount << ", "
 			<< stats[generationCount]["minFitness"] << ", "
 			<< stats[generationCount]["maxFitness"] << ", "
+			<< maxFitnessHist << " , "
 			<< stats[generationCount]["avgFitness"] << ", "
 			<< returnString(stats[generationCount]["bestChr"])
 			<< endl;
@@ -330,7 +335,7 @@ int main()
 	cout << endl;
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 	cout << "Runtime: " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) / 1000000.0 << " seconds. " << endl << endl;
-	cout << "Program end. Please type \"e\" to realy exit the program: ";
+	cout << "Program end. Please type \"e\" to really exit the program: ";
 	getline(cin, temp, 'e');
 	pause();
 
