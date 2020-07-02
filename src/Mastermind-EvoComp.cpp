@@ -165,7 +165,20 @@ int main()
 	for (int i = 0; i < GENE_SIZE; i++) {
 		cout << setw(10) << left << colourNames[userSelection[i]];
 	}
+
 	cout << endl;
+	printLine(30);
+
+	// Output stats
+	cout << endl << "Statistics:" << endl << endl;
+	cout << setw(15) << left << "Generation"
+		<< setw(25) << left << "Min Fitness"
+		<< setw(25) << left << "Max Fitness"
+		<< setw(25) << left << "Avg Fitness"
+		<< setw(25) << left << "Best Chromosome"
+		<< endl;
+
+	printLine(15 + (25 * 4));
 
 	while (true) {
 		// Generate chromosome list and write into json
@@ -190,29 +203,13 @@ int main()
 			{"chrs", chrList}
 			});
 
-		cout << endl;
-		printLine(30);
-
-		// Output stats
-		cout << endl << "Statistics:" << endl << endl;
-		cout << setw(15) << left << "Generation"
-			<< setw(25) << left << "Min Fitness"
-			<< setw(25) << left << "Max Fitness"
-			<< setw(25) << left << "Avg Fitness"
-			<< setw(25) << left << "Best Chromosome"
+		cout << setw(15) << right << stats[generationCount]["gen"]
+			<< setw(25) << right << stod(to_string(stats[generationCount]["minFitness"]))
+			<< setw(25) << right << stod(to_string(stats[generationCount]["maxFitness"]))
+			<< setw(25) << right << stod(to_string(stats[generationCount]["avgFitness"]))
+			<< "              "
+			<< setw(25) << left << returnString(stats[generationCount]["bestChr"])
 			<< endl;
-
-		printLine(15 + (25 * 4));
-
-		for (int i = 0; i < stats.size(); i++) {
-			cout << setw(15) << right << stats[i]["gen"]
-				<< setw(25) << right << stod(to_string(stats[i]["minFitness"]))
-				<< setw(25) << right << stod(to_string(stats[i]["maxFitness"]))
-				<< setw(25) << right << stod(to_string(stats[i]["avgFitness"]))
-				<< "              "
-				<< setw(25) << left << returnString(stats[i]["bestChr"])
-				<< endl;
-		}
 
 		// Write stats and related values into csv file 
 		if (generationCount == 0) {
@@ -228,11 +225,11 @@ int main()
 		// Check for termination criteria
 		if (stats[generationCount]["maxFitness"] == 1) {
 			cout << "Termination criteria: Achieved Target Sequence." << endl;
-			// TODO: Set breaks
+			break;
 		}
 		else if (generationCount == MAX_CYCLES) {
 			cout << "Termination criteria: Achieved maximum cycles of " << MAX_CYCLES << ". " << endl;
-			// TODO: Set breaks
+			break;
 		}
 
 		// Parent selection
@@ -295,12 +292,14 @@ int main()
 		outputJSON << stats.dump(2);
 		outputJSON.close();
 
-		// TODO: Loop
-		pause();
+		// Loop
 		generationCount++;
 	}
 
-	// TODO: Show this if program terminates
+	string temp = "";
+	cout << "Program end. Please type \"e\" to realy exit the program.";
+	getline(cin, temp, 'e');
+	pause();
 
 }
 
