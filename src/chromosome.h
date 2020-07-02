@@ -91,6 +91,7 @@ void Chromosome::calcFitness(array<int, GENE_SIZE> arr) {
 		fitness += (double)min(counts[i], selectionCounts[i]) / ((double)2 * GENE_SIZE);
 	}
 
+	fitness = round(fitness * 1000) / 1000;
 }
 
 // Get whole gene as array

@@ -244,7 +244,7 @@ int main()
 			<< endl;
 
 		// Check for termination criteria
-		if (stats[generationCount]["maxFitness"] >= 0.9999999999999999) {
+		if (stats[generationCount]["maxFitness"] == 1) {
 			cout << "\n\nTermination criteria: Achieved Target Sequence at generation "
 				<< generationCount << ". " << endl;
 			break;
@@ -335,6 +335,8 @@ int main()
 	outputJSON << stats.dump(2);
 	outputJSON.close();
 	cout << "\rRuntime: " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) / 1000000.0 << " seconds. " << endl << endl;
+
+	outputCSV.close();
 
 	cout << "Program end. Please type \"e\" to really exit the program: ";
 	getline(cin, temp, 'e');
