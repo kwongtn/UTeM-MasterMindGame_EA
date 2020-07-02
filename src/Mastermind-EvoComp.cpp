@@ -152,7 +152,7 @@ int main()
 	else {
 		// Randomly initialize values
 		for (int i = 0; i < GENE_SIZE; i++) {
-			userSelection[i] = timeRand() % GENE_SIZE;
+			userSelection[i] = timeRand() % SEL_SIZE;
 		}
 	}
 
