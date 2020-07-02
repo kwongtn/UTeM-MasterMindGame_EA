@@ -5,12 +5,10 @@
 #include "utils.h"
 #include "chromosome.h"
 
-array<int, GENE_SIZE> userSelection;
-unsigned short int generationCount = 0;
+unsigned short int experimentCount = 1;
+int totalGenerations = 0;
 unsigned short int experimentCount = 0;
 double maxFitnessHist = numeric_limits<double>::min();
-
-json stats = {};
 
 // Function to calculate and return max fitness in the chromosomes
 double maxFitness(vector<Chromosome> chrs) {
@@ -90,231 +88,260 @@ string fileNameGen() {
 	if (experimentCount < 10) {
 		myString += "0";
 	}
-	myString = experimentCount;
+	myString += to_string(experimentCount);
 	return myString;
 }
 
 int main()
 {
 
-	srand((unsigned int)time(NULL));
-	// Open output file
-	ofstream outputCSV, outputJSON;
-	string fileName = fileNameGen();
-
-	outputCSV.open(fileName + ".csv");
-	outputJSON.open(fileName + ".json");
-	if (outputCSV.is_open()) {
-		cout << "CSV File Save Path : " << fileName << ".csv" << endl;
-	}
-	else {
-		cout << "CSV File Error." << endl;
-		pause();
-	}
-	if (outputJSON.is_open()) {
-		cout << "JSON File Save Path: " << fileName << ".json" << endl;
-		outputJSON.close();
-	}
-	else {
-		cout << "JSON File Error." << endl;
-		pause();
-	}
-
-	cout << endl;
-
-	std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
-
-	// Randomly initialize values
-	for (int i = 0; i < GENE_SIZE; i++) {
-		userSelection[i] = timeRand() % GENE_SIZE;
-	}
-
-
-	// Initialize chromosomes with random values
-	vector<Chromosome> chromosomes;
-	for (int i = 0; i < POP_SIZE; i++) {
-		chromosomes.push_back(userSelection);
-	}
-
-	// Output inputted values
-	clearScreen();
-	cout << "Target values: " << endl;
-	for (int i = 0; i < GENE_SIZE; i++) {
-		cout << setw(10) << left << userSelection[i];
-	}
-	cout << endl;
-	for (int i = 0; i < GENE_SIZE; i++) {
-		cout << setw(10) << left << colourNames[userSelection[i]];
-	}
-
-	cout << endl;
-	printLine(30);
-
-	if (OUTPUT) {
-		// Output stats
-		cout << endl << "Statistics:" << endl << endl;
-		cout << setw(15) << left << "Generation"
-			<< setw(25) << left << "Min Fitness"
-			<< setw(25) << left << "Max Fitness"
-			<< setw(25) << left << "Avg Fitness"
-			<< setw(25) << left << "Best Chromosome"
-			<< endl;
-
-		printLine(15 + (25 * 4));
-
-	}
-	else {
-		cout << "Program running, " << endl;
-	}
 
 	while (true) {
-		// Generate chromosome list and write into json
-		json chrList = {};
-		for (int i = 0; i < POP_SIZE; i++) {
-			chromosomes[i].getGenesAsString();
-			chrList.push_back({
-				{"chrString", chromosomes[i].getGenesAsString()},
-				{"fitness", chromosomes[i].getFitness()}
-				});
+		clearScreen();
+		srand((unsigned int)time(NULL));
+
+		array<int, GENE_SIZE> userSelection;
+		unsigned short int generationCount = 0;
+
+		json stats = {};
+
+		// Open output file
+		ofstream outputCSV, outputJSON;
+		string fileName = fileNameGen();
+
+		outputCSV.open(fileName + ".csv");
+		outputJSON.open(fileName + ".json");
+		if (outputCSV.is_open()) {
+			cout << "CSV File Save Path : " << fileName << ".csv" << endl;
+		}
+		else {
+			cout << "CSV File Error." << endl;
+			pause();
+		}
+		if (outputJSON.is_open()) {
+			cout << "JSON File Save Path: " << fileName << ".json" << endl;
+			outputJSON.close();
+		}
+		else {
+			cout << "JSON File Error." << endl;
+			pause();
+		}
+
+		cout << endl;
+
+		std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+
+		// Randomly initialize values
+		for (int i = 0; i < GENE_SIZE; i++) {
+			userSelection[i] = timeRand() % SEL_SIZE;
 		}
 
 
-		// Write stats to variable
-		stats.push_back({
-			{"gen", generationCount},
-			{"avgFitness", avgFitness(chromosomes)},
-			{"minFitness", minFitness(chromosomes)},
-			{"maxFitness", maxFitness(chromosomes)},
-			{"bestChr", chromosomes[bestFitnessIndex(chromosomes)].getGenesAsString()},
-			{"worstChr", chromosomes[worstFitnessIndex(chromosomes)].getGenesAsString()},
-			{"chrs", chrList}
-			});
+		// Initialize chromosomes with random values
+		vector<Chromosome> chromosomes;
+		for (int i = 0; i < POP_SIZE; i++) {
+			chromosomes.push_back(userSelection);
+		}
+
+		cout << "\nExperiment #" << experimentCount << endl;
+		if (generationCount > 0) {
+			cout << "Average generations per experiment: " << totalGenerations / (experimentCount - 1) << endl;
+
+		}
+
+		// Output inputted values
+		cout << "Target values: " << endl;
+		for (int i = 0; i < GENE_SIZE; i++) {
+			cout << setw(10) << left << userSelection[i];
+		}
+		cout << endl;
+		for (int i = 0; i < GENE_SIZE; i++) {
+			cout << setw(10) << left << colourNames[userSelection[i]];
+		}
+
+		cout << endl;
+		printLine(30);
 
 		if (OUTPUT) {
-			cout << setw(15) << right << stats[generationCount]["gen"]
-				<< setw(25) << right << stod(to_string(stats[generationCount]["minFitness"]))
-				<< setw(25) << right << stod(to_string(stats[generationCount]["maxFitness"]))
-				<< setw(25) << right << stod(to_string(stats[generationCount]["avgFitness"]))
-				<< "              "
-				<< setw(25) << left << returnString(stats[generationCount]["bestChr"])
+			// Output stats
+			cout << endl << "Statistics:" << endl << endl;
+			cout << setw(15) << left << "Generation"
+				<< setw(25) << left << "Min Fitness"
+				<< setw(25) << left << "Max Fitness"
+				<< setw(25) << left << "Avg Fitness"
+				<< setw(25) << left << "Best Chromosome"
 				<< endl;
+
+			printLine(15 + (25 * 4));
 
 		}
 		else {
-			cout << "\rGeneration " << generationCount << ".";
+			cout << "Program running, " << endl;
 		}
 
-		// Write stats and related values into csv file 
-		if (generationCount == 0) {
-			outputCSV << "Generation, MinFitness, MaxFitness, HistoricalMaxFitness, AvgFitness, Best Chromosome" << endl;
-		}
-		outputCSV << generationCount << ", "
-			<< stats[generationCount]["minFitness"] << ", "
-			<< stats[generationCount]["maxFitness"] << ", "
-			<< maxFitnessHist << " , "
-			<< stats[generationCount]["avgFitness"] << ", "
-			<< returnString(stats[generationCount]["bestChr"])
-			<< endl;
+		while (true) {
+			// Generate chromosome list and write into json
+			json chrList = {};
+			for (int i = 0; i < POP_SIZE; i++) {
+				chromosomes[i].getGenesAsString();
+				chrList.push_back({
+					{"chrString", chromosomes[i].getGenesAsString()},
+					{"fitness", chromosomes[i].getFitness()}
+					});
+			}
 
-		// Check for termination criteria
-		if (stats[generationCount]["maxFitness"] == 1) {
-			cout << "\n\nTermination criteria: Achieved Target Sequence at generation "
-				<< generationCount << ". " << endl;
-			break;
-		}
-		else if (generationCount == MAX_CYCLES) {
-			cout << "\n\nTermination criteria: Achieved maximum cycles of " << MAX_CYCLES << ". " << endl;
-			break;
-		}
 
-		// Parent selection
-		array<int, 2> parentIndex;
-		for (int i = 0; i < 2; i++) {
-			int tournament[2];
-			tournament[0] = rand() % POP_SIZE;
+			// Write stats to variable
+			stats.push_back({
+				{"gen", generationCount},
+				{"avgFitness", avgFitness(chromosomes)},
+				{"minFitness", minFitness(chromosomes)},
+				{"maxFitness", maxFitness(chromosomes)},
+				{"bestChr", chromosomes[bestFitnessIndex(chromosomes)].getGenesAsString()},
+				{"worstChr", chromosomes[worstFitnessIndex(chromosomes)].getGenesAsString()},
+				{"chrs", chrList}
+				});
+
+			if (OUTPUT) {
+				cout << setw(15) << right << stats[generationCount]["gen"]
+					<< setw(25) << right << stod(to_string(stats[generationCount]["minFitness"]))
+					<< setw(25) << right << stod(to_string(stats[generationCount]["maxFitness"]))
+					<< setw(25) << right << stod(to_string(stats[generationCount]["avgFitness"]))
+					<< "              "
+					<< setw(25) << left << returnString(stats[generationCount]["bestChr"])
+					<< endl;
+
+			}
+			else {
+				if (!AUTO_LOOP) {
+					cout << "\rGeneration " << generationCount << ".";
+
+				}
+			}
+
+			// Write stats and related values into csv file 
+			if (generationCount == 0) {
+				outputCSV << "Generation, MinFitness, MaxFitness, HistoricalMaxFitness, AvgFitness, Best Chromosome" << endl;
+			}
+			outputCSV << generationCount << ", "
+				<< stats[generationCount]["minFitness"] << ", "
+				<< stats[generationCount]["maxFitness"] << ", "
+				<< maxFitnessHist << " , "
+				<< stats[generationCount]["avgFitness"] << ", "
+				<< returnString(stats[generationCount]["bestChr"])
+				<< endl;
+
+			// Check for termination criteria
+			if (stats[generationCount]["maxFitness"] == 1) {
+				cout << "\n\nTermination criteria: Achieved Target Sequence at generation "
+					<< generationCount << ". " << endl;
+				break;
+			}
+			else if (generationCount == MAX_CYCLES) {
+				cout << "\n\nTermination criteria: Achieved maximum cycles of " << MAX_CYCLES << ". " << endl;
+				break;
+			}
+
+			// Parent selection
+			array<int, 2> parentIndex;
+			for (int i = 0; i < 2; i++) {
+				int tournament[2];
+				tournament[0] = rand() % POP_SIZE;
+				while (true) {
+					tournament[1] = rand() % POP_SIZE;
+					if (tournament[0] != tournament[1]) {
+						break;
+					}
+				}
+
+				if (chromosomes[tournament[0]].getFitness() > chromosomes[tournament[1]].getFitness()) {
+					parentIndex[i] = tournament[0];
+				}
+				else {
+					parentIndex[i] = tournament[1];
+
+				}
+
+
+			}
+
+			array<array<int, GENE_SIZE>, 2> childrenGenes;
+			childrenGenes[0] = chromosomes[parentIndex[0]].getGenes();
+			childrenGenes[1] = chromosomes[parentIndex[1]].getGenes();
+
+			// Crossover
+			if (((rand() % 100) / 100) < CRSVR_RATE) {
+				stats[generationCount]["crossover"] = true;
+				int crossoverPoint = rand() % GENE_SIZE;
+				for (int i = crossoverPoint; i < GENE_SIZE; i++) {
+					int temp = childrenGenes[0][i];
+					childrenGenes[0][i] = childrenGenes[1][i];
+					childrenGenes[1][i] = temp;
+				}
+
+			}
+			else {
+				stats[generationCount]["crossover"] = false;
+			}
+
+			// Mutation
+			for (int i = 0; i < childrenGenes.size(); i++) {
+				if (((rand() % 100) / 100) < MUTATION_RATE) {
+					string mutationString = "mutation" + i;
+					stats[generationCount][mutationString] = true;
+					childrenGenes[i][rand() % GENE_SIZE] = colors[rand() % SEL_SIZE];
+
+				}
+				else {
+					string mutationString = "mutation" + i;
+					stats[generationCount][mutationString] = false;
+
+				}
+
+			}
+
+			// Select and forfeit chromosomes, replace with children. The worst and one other random chromosome will be replaced.
+			chromosomes[worstFitnessIndex(chromosomes)] = Chromosome(userSelection, childrenGenes[0]);
 			while (true) {
-				tournament[1] = rand() % POP_SIZE;
-				if (tournament[0] != tournament[1]) {
+				int index = rand() % POP_SIZE;
+				if (index != worstFitnessIndex(chromosomes)) {
+					chromosomes[index] = Chromosome(userSelection, childrenGenes[1]);
 					break;
 				}
 			}
 
-			if (chromosomes[tournament[0]].getFitness() > chromosomes[tournament[1]].getFitness()) {
-				parentIndex[i] = tournament[0];
-			}
-			else {
-				parentIndex[i] = tournament[1];
-
-			}
-
-
+			// Loop
+			generationCount++;
+			totalGenerations++;
 		}
 
-		array<array<int, GENE_SIZE>, 2> childrenGenes;
-		childrenGenes[0] = chromosomes[parentIndex[0]].getGenes();
-		childrenGenes[1] = chromosomes[parentIndex[1]].getGenes();
+		string temp = "";
+		cout << endl;
+		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+		// Write stats into JSON File
+		cout << "Writing into JSON File.";
+		outputJSON.open(fileName + ".json");
+		outputJSON << stats.dump(2);
+		outputJSON.close();
+		cout << "\rRuntime: " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) / 1000000.0 << " seconds. " << endl << endl;
 
-		// Crossover
-		if (((rand() % 100) / 100) < CRSVR_RATE) {
-			stats[generationCount]["crossover"] = true;
-			int crossoverPoint = rand() % GENE_SIZE;
-			for (int i = crossoverPoint; i < GENE_SIZE; i++) {
-				int temp = childrenGenes[0][i];
-				childrenGenes[0][i] = childrenGenes[1][i];
-				childrenGenes[1][i] = temp;
-			}
+		outputCSV.close();
 
-		}
-		else {
-			stats[generationCount]["crossover"] = false;
-		}
+		cout << "Average generations per experiment: " << totalGenerations / experimentCount << endl;
 
-		// Mutation
-		for (int i = 0; i < childrenGenes.size(); i++) {
-			if (((rand() % 100) / 100) < MUTATION_RATE) {
-				string mutationString = "mutation" + i;
-				stats[generationCount][mutationString] = true;
-				childrenGenes[i][rand() % GENE_SIZE] = colors[rand() % SEL_SIZE];
-
-			}
-			else {
-				string mutationString = "mutation" + i;
-				stats[generationCount][mutationString] = false;
-
-			}
-
-		}
-
-		// Select and forfeit chromosomes, replace with children. The worst and one other random chromosome will be replaced.
-		chromosomes[worstFitnessIndex(chromosomes)] = Chromosome(userSelection, childrenGenes[0]);
-		while (true) {
-			int index = rand() % POP_SIZE;
-			if (index != worstFitnessIndex(chromosomes)) {
-				chromosomes[index] = Chromosome(userSelection, childrenGenes[1]);
+		cout << "\nExperiment #" << experimentCount++ << " end. ";
+		if (!AUTO_LOOP) {
+			cout << "Do you want to continue next experiment ? \n";
+			if (!decider()) {
 				break;
 			}
+
 		}
+		maxFitnessHist = numeric_limits<double>::min();
 
-		// Loop
-		generationCount++;
 	}
-
-	string temp = "";
-	cout << endl;
-	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-	// Write stats into JSON File
-	cout << "Writing into JSON File.";
-	outputJSON.open(fileName + ".json");
-	outputJSON << stats.dump(2);
-	outputJSON.close();
-	cout << "\rRuntime: " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) / 1000000.0 << " seconds. " << endl << endl;
-
-	outputCSV.close();
-
-	cout << "Program end. Please type \"e\" to really exit the program: ";
-	getline(cin, temp, 'e');
+	cout << "Program end.";
 	pause();
-
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
