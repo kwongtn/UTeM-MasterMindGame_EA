@@ -244,7 +244,7 @@ int main()
 			<< endl;
 
 		// Check for termination criteria
-		if (stats[generationCount]["maxFitness"] == 1) {
+		if (stats[generationCount]["maxFitness"] >= 0.9999999999999999) {
 			cout << "\n\nTermination criteria: Achieved Target Sequence at generation "
 				<< generationCount << ". " << endl;
 			break;
