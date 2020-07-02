@@ -322,11 +322,6 @@ int main()
 			}
 		}
 
-		// Write stats into JSON File
-		outputJSON.open(fileName + ".json");
-		outputJSON << stats.dump(2);
-		outputJSON.close();
-
 		// Loop
 		generationCount++;
 	}
@@ -334,7 +329,13 @@ int main()
 	string temp = "";
 	cout << endl;
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-	cout << "Runtime: " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) / 1000000.0 << " seconds. " << endl << endl;
+	// Write stats into JSON File
+	cout << "Writing into JSON File.";
+	outputJSON.open(fileName + ".json");
+	outputJSON << stats.dump(2);
+	outputJSON.close();
+	cout << "\rRuntime: " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) / 1000000.0 << " seconds. " << endl << endl;
+
 	cout << "Program end. Please type \"e\" to really exit the program: ";
 	getline(cin, temp, 'e');
 	pause();
