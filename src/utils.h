@@ -122,14 +122,19 @@ inline std::string returnDatetimeString(bool includeDashes = false)
 	std::stringstream ss;
 	ss << nowTime.tm_year + 1900;
 	if (includeDashes) { ss << "-"; }
+	if (nowTime.tm_mon < 10) { ss << "0"; }
 	ss << nowTime.tm_mon;
 	if (includeDashes) { ss << "-"; }
+	if (nowTime.tm_mday < 10) { ss << "0"; }
 	ss << nowTime.tm_mday;
 	if (includeDashes) { ss << "-"; }
+	if (nowTime.tm_hour < 10) { ss << "0"; }
 	ss << nowTime.tm_hour;
 	if (includeDashes) { ss << ":"; }
+	if (nowTime.tm_min < 10) { ss << "0"; }
 	ss << nowTime.tm_min;
 	if (includeDashes) { ss << ":"; }
+	if (nowTime.tm_sec < 10) { ss << "0"; }
 	ss << nowTime.tm_sec;
 
 	return ss.str();
