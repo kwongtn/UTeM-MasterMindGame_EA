@@ -7,6 +7,7 @@
 
 array<int, GENE_SIZE> userSelection;
 unsigned short int generationCount = 0;
+unsigned short int experimentCount = 0;
 double maxFitnessHist = numeric_limits<double>::min();
 
 json stats = {};
@@ -81,6 +82,17 @@ double avgFitness(vector<Chromosome> chrs) {
 	return totalFitness / POP_SIZE;
 }
 
+string fileNameGen() {
+	string myString = "../results/" + returnDatetimeString() + "-";
+	if (experimentCount < 100) {
+		myString += "0";
+	}
+	if (experimentCount < 10) {
+		myString += "0";
+	}
+	myString = experimentCount;
+	return myString;
+}
 
 int main()
 {
@@ -88,7 +100,8 @@ int main()
 	srand((unsigned int)time(NULL));
 	// Open output file
 	ofstream outputCSV, outputJSON;
-	string fileName = "../results/" + returnDatetimeString();
+	string fileName = fileNameGen();
+
 	outputCSV.open(fileName + ".csv");
 	outputJSON.open(fileName + ".json");
 	if (outputCSV.is_open()) {
@@ -109,54 +122,14 @@ int main()
 
 	cout << endl;
 
-	std::chrono::steady_clock::time_point begin;
+	std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 
-	// Request user input, error catch on each attempt
-	cout << "Do you want to input selection? If no, a random sequence will be selected." << endl;
-	if (decider()) {
-		// Generate menu and user inputs, showing current selected ones.
-		for (int i = 0; i < GENE_SIZE; i++) {
-			while (true) {
-				clearScreen();
-				cout << "Current Available Selections:" << endl;
-				for (int j = 0; j < colors.size(); j++) {
-					cout << setw(5) << left << colors[j] << setw(20) << left << colourNames[j] << endl;
-				}
-
-				cout << endl;
-
-				cout << "Current selection : ";
-				for (int k = 0; k < i; k++) {
-					cout << colors[userSelection[k]] << "(" << colourNames[userSelection[k]] << "), ";
-				}
-
-				cout << endl << endl;
-
-				// Get user inputs
-				cout << "Please input " << GENE_SIZE << " colours for your selection. ";
-				cout << "For gene " << i + 1 << ": ";
-				int tempInt = inputInt();
-				if (!checkExistInArray(colors, tempInt)) {
-					cout << "Invalid value, please re-input." << endl;
-					pause();
-				}
-				else {
-					userSelection[i] = tempInt;
-					break;
-				}
-
-			}
-		}
-		begin = std::chrono::steady_clock::now();
-	}
-	else {
-		// Randomly initialize values
-		for (int i = 0; i < GENE_SIZE; i++) {
-			userSelection[i] = timeRand() % SEL_SIZE;
-		}
+	// Randomly initialize values
+	for (int i = 0; i < GENE_SIZE; i++) {
+		userSelection[i] = timeRand() % GENE_SIZE;
 	}
 
-	begin = std::chrono::steady_clock::now();
+
 	// Initialize chromosomes with random values
 	vector<Chromosome> chromosomes;
 	for (int i = 0; i < POP_SIZE; i++) {
