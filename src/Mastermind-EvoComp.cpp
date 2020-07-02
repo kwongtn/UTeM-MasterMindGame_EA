@@ -7,7 +7,10 @@
 
 unsigned short int experimentCount = 1;
 int totalGenerations = 0;
-unsigned short int experimentCount = 0;
+int lowestGen = numeric_limits<int>::max();
+int lowestGenExperiment = 0;
+int maxGen = numeric_limits<int>::min();
+int maxGenExperiment = 0;
 double maxFitnessHist = numeric_limits<double>::min();
 
 // Function to calculate and return max fitness in the chromosomes
@@ -96,12 +99,12 @@ int main()
 {
 
 
+	unsigned short int generationCount = 0;
 	while (true) {
 		clearScreen();
-		srand((unsigned int)time(NULL));
+		//srand((unsigned int)time(NULL));
 
 		array<int, GENE_SIZE> userSelection;
-		unsigned short int generationCount = 0;
 
 		json stats = {};
 
@@ -148,6 +151,9 @@ int main()
 			cout << "Average generations per experiment: " << totalGenerations / (experimentCount - 1) << endl;
 
 		}
+		cout << "Lowest generation count: " << lowestGen << " @ " << lowestGenExperiment << endl;
+		cout << "Max generation count: " << maxGen << " @ " << maxGenExperiment << endl;
+		cout << endl;
 
 		// Output inputted values
 		cout << "Target values: " << endl;
@@ -338,7 +344,15 @@ int main()
 
 		}
 		maxFitnessHist = numeric_limits<double>::min();
-
+		if (generationCount > maxGen) {
+			maxGen = generationCount;
+			maxGenExperiment = experimentCount;
+		}
+		if (generationCount < lowestGen) {
+			lowestGen = generationCount;
+			lowestGenExperiment = experimentCount;
+		}
+		generationCount = 0;
 	}
 	cout << "Program end.";
 	pause();
