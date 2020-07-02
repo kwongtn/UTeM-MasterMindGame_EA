@@ -148,10 +148,12 @@ int main()
 	}
 	cout << endl;
 
-	// Trigger to calculate fitness function
-	for (int i = 0; i < POP_SIZE; i++) {
-		chromosomes[i].countFitness(userSelection);
-	}
+		// Trigger to calculate fitness function
+		for (int i = 0; i < POP_SIZE; i++) {
+			// cout << "Chromosome: " << chromosomes[i].getGenesAsString() << ", Fitness: ";
+			chromosomes[i].calcFitness(userSelection);
+			// cout << chromosomes[i].getFitness() << endl;
+		}
 
 	// Write stats to variable
 	stats.push_back({
