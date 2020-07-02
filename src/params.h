@@ -78,3 +78,4 @@ const int CRSVR_COUNT = 1;
 const bool OUTPUT = true;
 const bool AUTO_LOOP = false;
 const bool FILE_OUTPUT = false;
+const int TOURNAMENT_SIZE = 4;

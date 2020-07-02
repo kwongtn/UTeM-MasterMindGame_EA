@@ -260,22 +260,26 @@ int main()
 			// Parent selection
 			array<int, 2> parentIndex;
 			for (int i = 0; i < 2; i++) {
-				int tournament[2];
-				tournament[0] = rand() % POP_SIZE;
-				while (true) {
-					tournament[1] = rand() % POP_SIZE;
-					if (tournament[0] != tournament[1]) {
-						break;
+				vector<int> tournaments;
+				tournaments.push_back(rand() % POP_SIZE);
+				for (int j = 0; j < TOURNAMENT_SIZE; j++) {
+					while (true) {
+						int tournament = rand() % POP_SIZE;
+						if (!checkExistInArray(tournaments, tournament)) {
+							tournaments.push_back(tournament);
+							break;
+						}
 					}
 				}
 
-				if (chromosomes[tournament[0]].getFitness() > chromosomes[tournament[1]].getFitness()) {
-					parentIndex[i] = tournament[0];
+				double bestFitInd = numeric_limits<double>::min();
+				for (int j : tournaments) {
+					if (chromosomes[j].getFitness() > chromosomes[bestFitInd].getFitness()) {
+						bestFitInd = j;
+					}
 				}
-				else {
-					parentIndex[i] = tournament[1];
 
-				}
+				parentIndex[i] = bestFitInd;
 
 
 			}
