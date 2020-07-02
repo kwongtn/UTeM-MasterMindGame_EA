@@ -153,7 +153,7 @@ int main()
 		}
 
 		cout << "\nExperiment #" << experimentCount << endl;
-		if (generationCount > 0) {
+		if (experimentCount > 0) {
 			cout << "Average generations per experiment: " << totalGenerations / (experimentCount - 1) << endl;
 
 		}
