@@ -104,7 +104,7 @@ inline bool decider(std::string custString = "Your selection (y / n): ") {
 }
 
 template <typename T>
-inline bool checkExistInArray(array<T, SEL_SIZE> myArray, T check) {
+inline bool checkExistInArray(vector<T> myArray, T check) {
 	for (int i = 0; i < myArray.size(); i++) {
 		if (myArray[i] == check) {
 			return true;

@@ -36,13 +36,15 @@ const int MAX_CYCLES = 100;
  - 6	: Orange
  - 7	: Black
  - 8	: White
+ - 9  : Turquoise
+ - 10 : Maroon
 */
 
-const array<int, SEL_SIZE> colors = {
-	0, 1, 2, 3, 4, 5, 6, 7
+const vector<int> colors = {
+	0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 };
 
-const array<string, SEL_SIZE> colourNames = {
+const vector<string> colourNames = {
 	"Red",
 	"Green",
 	"Blue",
@@ -50,7 +52,9 @@ const array<string, SEL_SIZE> colourNames = {
 	"Brown",
 	"Orange",
 	"Black",
-	"White"
+	"White",
+	"Turquoise",
+	"Maroon"
 };
 
 /*
