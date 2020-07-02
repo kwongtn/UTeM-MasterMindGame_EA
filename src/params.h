@@ -69,3 +69,6 @@ const double CRSVR_RATE = 0.5;
 
 // The number of crossover points in a single chromosome
 const int CRSVR_COUNT = 1;
+
+// Whether to output intermediatery messages
+const bool OUTPUT = false;

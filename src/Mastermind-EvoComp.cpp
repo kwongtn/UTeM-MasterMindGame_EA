@@ -104,6 +104,8 @@ int main()
 	}
 
 	cout << endl;
+	
+	std::chrono::steady_clock::time_point begin;
 
 	// Request user input, error catch on each attempt
 	cout << "Do you want to input selection? If no, a random sequence will be selected." << endl;
@@ -141,6 +143,7 @@ int main()
 
 			}
 		}
+		begin = std::chrono::steady_clock::now();
 	}
 	else {
 		// Randomly initialize values
@@ -149,6 +152,7 @@ int main()
 		}
 	}
 
+	begin = std::chrono::steady_clock::now();
 	// Initialize chromosomes with random values
 	vector<Chromosome> chromosomes;
 	for (int i = 0; i < POP_SIZE; i++) {
@@ -169,16 +173,19 @@ int main()
 	cout << endl;
 	printLine(30);
 
-	// Output stats
-	cout << endl << "Statistics:" << endl << endl;
-	cout << setw(15) << left << "Generation"
-		<< setw(25) << left << "Min Fitness"
-		<< setw(25) << left << "Max Fitness"
-		<< setw(25) << left << "Avg Fitness"
-		<< setw(25) << left << "Best Chromosome"
-		<< endl;
+	if (OUTPUT) {
+		// Output stats
+		cout << endl << "Statistics:" << endl << endl;
+		cout << setw(15) << left << "Generation"
+			<< setw(25) << left << "Min Fitness"
+			<< setw(25) << left << "Max Fitness"
+			<< setw(25) << left << "Avg Fitness"
+			<< setw(25) << left << "Best Chromosome"
+			<< endl;
 
-	printLine(15 + (25 * 4));
+		printLine(15 + (25 * 4));
+
+	}
 
 	while (true) {
 		// Generate chromosome list and write into json
@@ -203,13 +210,16 @@ int main()
 			{"chrs", chrList}
 			});
 
-		cout << setw(15) << right << stats[generationCount]["gen"]
-			<< setw(25) << right << stod(to_string(stats[generationCount]["minFitness"]))
-			<< setw(25) << right << stod(to_string(stats[generationCount]["maxFitness"]))
-			<< setw(25) << right << stod(to_string(stats[generationCount]["avgFitness"]))
-			<< "              "
-			<< setw(25) << left << returnString(stats[generationCount]["bestChr"])
-			<< endl;
+		if (OUTPUT) {
+			cout << setw(15) << right << stats[generationCount]["gen"]
+				<< setw(25) << right << stod(to_string(stats[generationCount]["minFitness"]))
+				<< setw(25) << right << stod(to_string(stats[generationCount]["maxFitness"]))
+				<< setw(25) << right << stod(to_string(stats[generationCount]["avgFitness"]))
+				<< "              "
+				<< setw(25) << left << returnString(stats[generationCount]["bestChr"])
+				<< endl;
+
+		}
 
 		// Write stats and related values into csv file 
 		if (generationCount == 0) {
@@ -224,7 +234,8 @@ int main()
 
 		// Check for termination criteria
 		if (stats[generationCount]["maxFitness"] == 1) {
-			cout << "Termination criteria: Achieved Target Sequence." << endl;
+			cout << "Termination criteria: Achieved Target Sequence at generation " 
+				<< generationCount << ". " << endl;
 			break;
 		}
 		else if (generationCount == MAX_CYCLES) {
@@ -297,6 +308,9 @@ int main()
 	}
 
 	string temp = "";
+	cout << endl;
+	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+	cout << "Runtime: " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) / 1000000.0 << " seconds. " << endl << endl;
 	cout << "Program end. Please type \"e\" to realy exit the program.";
 	getline(cin, temp, 'e');
 	pause();
