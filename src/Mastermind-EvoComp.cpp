@@ -111,23 +111,29 @@ int main()
 		// Open output file
 		ofstream outputCSV, outputJSON;
 		string fileName = fileNameGen();
+		if (FILE_OUTPUT) {
 
-		outputCSV.open(fileName + ".csv");
-		outputJSON.open(fileName + ".json");
-		if (outputCSV.is_open()) {
-			cout << "CSV File Save Path : " << fileName << ".csv" << endl;
+			outputCSV.open(fileName + ".csv");
+			outputJSON.open(fileName + ".json");
+			if (outputCSV.is_open()) {
+				cout << "CSV File Save Path : " << fileName << ".csv" << endl;
+			}
+			else {
+				cout << "CSV File Error." << endl;
+				pause();
+			}
+			if (outputJSON.is_open()) {
+				cout << "JSON File Save Path: " << fileName << ".json" << endl;
+				outputJSON.close();
+			}
+			else {
+				cout << "JSON File Error." << endl;
+				pause();
+			}
+
 		}
 		else {
-			cout << "CSV File Error." << endl;
-			pause();
-		}
-		if (outputJSON.is_open()) {
-			cout << "JSON File Save Path: " << fileName << ".json" << endl;
-			outputJSON.close();
-		}
-		else {
-			cout << "JSON File Error." << endl;
-			pause();
+			cout << "File output disabled." << endl;
 		}
 
 		cout << endl;
@@ -225,17 +231,20 @@ int main()
 				}
 			}
 
-			// Write stats and related values into csv file 
-			if (generationCount == 0) {
-				outputCSV << "Generation, MinFitness, MaxFitness, HistoricalMaxFitness, AvgFitness, Best Chromosome" << endl;
+			if (FILE_OUTPUT) {
+				// Write stats and related values into csv file 
+				if (generationCount == 0) {
+					outputCSV << "Generation, MinFitness, MaxFitness, HistoricalMaxFitness, AvgFitness, Best Chromosome" << endl;
+				}
+				outputCSV << generationCount << ", "
+					<< stats[generationCount]["minFitness"] << ", "
+					<< stats[generationCount]["maxFitness"] << ", "
+					<< maxFitnessHist << " , "
+					<< stats[generationCount]["avgFitness"] << ", "
+					<< returnString(stats[generationCount]["bestChr"])
+					<< endl;
+
 			}
-			outputCSV << generationCount << ", "
-				<< stats[generationCount]["minFitness"] << ", "
-				<< stats[generationCount]["maxFitness"] << ", "
-				<< maxFitnessHist << " , "
-				<< stats[generationCount]["avgFitness"] << ", "
-				<< returnString(stats[generationCount]["bestChr"])
-				<< endl;
 
 			// Check for termination criteria
 			if (stats[generationCount]["maxFitness"] == 1) {
@@ -324,11 +333,14 @@ int main()
 		string temp = "";
 		cout << endl;
 		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-		// Write stats into JSON File
-		cout << "Writing into JSON File.";
-		outputJSON.open(fileName + ".json");
-		outputJSON << stats.dump(2);
-		outputJSON.close();
+		if (FILE_OUTPUT) {
+			// Write stats into JSON File
+			cout << "Writing into JSON File.";
+			outputJSON.open(fileName + ".json");
+			outputJSON << stats.dump(2);
+			outputJSON.close();
+
+		}
 		cout << "\rRuntime: " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) / 1000000.0 << " seconds. " << endl << endl;
 
 		outputCSV.close();

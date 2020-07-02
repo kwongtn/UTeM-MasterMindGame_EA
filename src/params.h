@@ -77,3 +77,4 @@ const int CRSVR_COUNT = 1;
 // Whether to output intermediatery messages
 const bool OUTPUT = true;
 const bool AUTO_LOOP = false;
+const bool FILE_OUTPUT = false;
