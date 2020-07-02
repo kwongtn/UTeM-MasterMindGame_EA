@@ -71,7 +71,8 @@ void Chromosome::calcFitness(array<int, GENE_SIZE> arr) {
 	for (int i = 0; i < arr.size(); i++) {
 		if (arr[i] == genes[i]) {
 			fitness += (double)1 / GENE_SIZE;
-			counts[arr[i]]--;
+			counts[arr[i]] -= 1;
+			selectionCounts[arr[i]] -= 1;
 		}
 	}
 
