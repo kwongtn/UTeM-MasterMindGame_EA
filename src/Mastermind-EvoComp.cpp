@@ -96,6 +96,7 @@ int main()
 	}
 	if (outputJSON.is_open()) {
 		cout << "JSON File Save Path: " << fileName << ".json" << endl;
+		outputJSON.close();
 	}
 	else {
 		cout << "JSON File Error." << endl;
@@ -163,6 +164,7 @@ int main()
 	}
 	cout << endl;
 
+	while (true) {
 		// Trigger to calculate fitness function
 		for (int i = 0; i < POP_SIZE; i++) {
 			// cout << "Chromosome: " << chromosomes[i].getGenesAsString() << ", Fitness: ";
@@ -293,14 +295,17 @@ int main()
 			}
 		}
 
+		// Write stats into JSON File
+		outputJSON.open(fileName + ".json");
+		outputJSON << stats.dump(2);
+		outputJSON.close();
 
-	// TODO: Loop
-
+		// TODO: Loop
+		pause();
+		generationCount++;
+	}
 
 	// TODO: Show this if program terminates
-
-	// TODO: Write into JSON File
-	outputJSON << stats.dump(2);
 
 }
 
