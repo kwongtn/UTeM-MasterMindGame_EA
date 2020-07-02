@@ -38,6 +38,21 @@ int bestFitnessIndex(array<Chromosome, POP_SIZE> chrs) {
 	return bestFitnessIndex;
 }
 
+// Function to calculate and return index of the worst chromosome
+int worstFitnessIndex(array<Chromosome, POP_SIZE> chrs) {
+	double worstFitness = numeric_limits<double>::max();
+	int worstFitnessIndex = -1;
+
+	for (int i = 0; i < chrs.size(); i++) {
+		if (chrs[i].getFitness() < worstFitness) {
+			worstFitness = chrs[i].getFitness();
+			worstFitnessIndex = i;
+		}
+	}
+
+	return worstFitnessIndex;
+}
+
 // Function to calculate and return min fitness in the chromsomes
 double minFitness(array<Chromosome, POP_SIZE> chrs) {
 	double minVal = numeric_limits<double>::max();
@@ -167,95 +182,116 @@ int main()
 		}
 
 
-	// Write stats to variable
-	stats.push_back({
-		{"gen", generationCount},
-		{"avgFitness", avgFitness(chromosomes)},
-		{"minFitness", minFitness(chromosomes)},
-		{"maxFitness", maxFitness(chromosomes)},
-		{"bestChr", chromosomes[bestFitnessIndex(chromosomes)].getGenesAsString()}
-		});
+		// Write stats to variable
+		stats.push_back({
+			{"gen", generationCount},
+			{"avgFitness", avgFitness(chromosomes)},
+			{"minFitness", minFitness(chromosomes)},
+			{"maxFitness", maxFitness(chromosomes)},
+			{"bestChr", chromosomes[bestFitnessIndex(chromosomes)].getGenesAsString()},
+			{"worstChr", chromosomes[worstFitnessIndex(chromosomes)].getGenesAsString()},
+			{"chrs", chrList}
+			});
 
-	cout << endl;
-	printLine(30);
+		cout << endl;
+		printLine(30);
 
-	// TODO: Output stats
-	cout << endl << "Statistics:" << endl << endl;
-	cout << setw(15) << left << "Generation"
-		<< setw(25) << left << "Min Fitness"
-		<< setw(25) << left << "Max Fitness"
-		<< setw(25) << left << "Avg Fitness"
-		<< setw(25) << left << "Best Chromosome"
-		<< endl;
-
-	printLine(15 + (25 * 4));
-
-	for (int i = 0; i < stats.size(); i++) {
-		cout << setw(15) << right << stats[i]["gen"]
-			<< setw(25) << right << stod(to_string(stats[i]["minFitness"]))
-			<< setw(25) << right << stod(to_string(stats[i]["maxFitness"]))
-			<< setw(25) << right << stod(to_string(stats[i]["avgFitness"]))
-			<< "              "
-			<< setw(25) << left << returnString(stats[i]["bestChr"])
+		// Output stats
+		cout << endl << "Statistics:" << endl << endl;
+		cout << setw(15) << left << "Generation"
+			<< setw(25) << left << "Min Fitness"
+			<< setw(25) << left << "Max Fitness"
+			<< setw(25) << left << "Avg Fitness"
+			<< setw(25) << left << "Best Chromosome"
 			<< endl;
-	}
 
-	// Write stats and related values into csv file 
-	if (generationCount == 0) {
-		outputCSV << "Generation, MinFitness, MaxFitness, AvgFitness, Best Chromosome" << endl;
-	}
-	outputCSV << generationCount << ", "
-		<< stats[generationCount]["minFitness"] << ", "
-		<< stats[generationCount]["maxFitness"] << ", "
-		<< stats[generationCount]["avgFitness"] << ", "
-		<< returnString(stats[generationCount]["bestChr"])
-		<< endl;
+		printLine(15 + (25 * 4));
 
-	// Check for termination criteria
-	if (stats[generationCount]["maxFitness"] == 1) {
-		cout << "Termination criteria: Achieved Target Sequence." << endl;
-		// TODO: Set breaks
-	}
-	else if (generationCount == MAX_CYCLES) {
-		cout << "Termination criteria: Achieved maximum cycles of " << MAX_CYCLES << ". " << endl;
-		// TODO: Set breaks
-	}
-
-	// Parent selection
-	array<int, 2> parentIndex;
-	parentIndex[0] = rand() % POP_SIZE;
-	while (true) {
-		parentIndex[1] = rand() % POP_SIZE;
-		if (parentIndex[1] != parentIndex[0]) {
-			break;
-		}
-	}
-
-	array<array<int, GENE_SIZE>, 2> childrenGenes;
-	childrenGenes[0] = chromosomes[parentIndex[0]].getGenes();
-	childrenGenes[1] = chromosomes[parentIndex[1]].getGenes();
-
-	// Crossover
-	if (((rand() % 101) / 100) < CRSVR_RATE) {
-		int crossoverPoint = rand() % GENE_SIZE;
-		for (int i = crossoverPoint; i < GENE_SIZE; i++) {
-			int temp = childrenGenes[0][i];
-			childrenGenes[0][i] = childrenGenes[1][i];
-			childrenGenes[1][i] = temp;
+		for (int i = 0; i < stats.size(); i++) {
+			cout << setw(15) << right << stats[i]["gen"]
+				<< setw(25) << right << stod(to_string(stats[i]["minFitness"]))
+				<< setw(25) << right << stod(to_string(stats[i]["maxFitness"]))
+				<< setw(25) << right << stod(to_string(stats[i]["avgFitness"]))
+				<< "              "
+				<< setw(25) << left << returnString(stats[i]["bestChr"])
+				<< endl;
 		}
 
-	}
+		// Write stats and related values into csv file 
+		if (generationCount == 0) {
+			outputCSV << "Generation, MinFitness, MaxFitness, AvgFitness, Best Chromosome" << endl;
+		}
+		outputCSV << generationCount << ", "
+			<< stats[generationCount]["minFitness"] << ", "
+			<< stats[generationCount]["maxFitness"] << ", "
+			<< stats[generationCount]["avgFitness"] << ", "
+			<< returnString(stats[generationCount]["bestChr"])
+			<< endl;
 
-	// Mutation
-	for (int i = 0; i < childrenGenes.size(); i++) {
-		if (((rand() % 101) / 100) < MUTATION_RATE) {
-			childrenGenes[i][rand() % GENE_SIZE] = colors[rand() % SEL_SIZE];
+		// Check for termination criteria
+		if (stats[generationCount]["maxFitness"] == 1) {
+			cout << "Termination criteria: Achieved Target Sequence." << endl;
+			// TODO: Set breaks
+		}
+		else if (generationCount == MAX_CYCLES) {
+			cout << "Termination criteria: Achieved maximum cycles of " << MAX_CYCLES << ". " << endl;
+			// TODO: Set breaks
+		}
+
+		// Parent selection
+		array<int, 2> parentIndex;
+		parentIndex[0] = rand() % POP_SIZE;
+		while (true) {
+			parentIndex[1] = rand() % POP_SIZE;
+			if (parentIndex[1] != parentIndex[0]) {
+				break;
+			}
+		}
+
+		array<array<int, GENE_SIZE>, 2> childrenGenes;
+		childrenGenes[0] = chromosomes[parentIndex[0]].getGenes();
+		childrenGenes[1] = chromosomes[parentIndex[1]].getGenes();
+
+		// Crossover
+		if (((rand() % 100) / 100) < CRSVR_RATE) {
+			stats[generationCount]["crossover"] = true;
+			int crossoverPoint = rand() % GENE_SIZE;
+			for (int i = crossoverPoint; i < GENE_SIZE; i++) {
+				int temp = childrenGenes[0][i];
+				childrenGenes[0][i] = childrenGenes[1][i];
+				childrenGenes[1][i] = temp;
+			}
+
+		}
+		else {
+			stats[generationCount]["crossover"] = false;
+		}
+
+		// Mutation
+		for (int i = 0; i < childrenGenes.size(); i++) {
+			if (((rand() % 100) / 100) < MUTATION_RATE) {
+				string mutationString = "mutation" + i;
+				stats[generationCount][mutationString] = true;
+				childrenGenes[i][rand() % GENE_SIZE] = colors[rand() % SEL_SIZE];
+
+			}
+			else {
+				string mutationString = "mutation" + i;
+				stats[generationCount][mutationString] = false;
+
+			}
 
 		}
 
-	}
-
-	// TODO: Select and forfeit chromosomes, replace with children
+		// Select and forfeit chromosomes, replace with children. The worst and one other random chromosome will be replaced.
+		chromosomes[worstFitnessIndex(chromosomes)] = Chromosome(childrenGenes[0]);
+		while (true) {
+			int index = rand() % POP_SIZE;
+			if (index != worstFitnessIndex(chromosomes)) {
+				chromosomes[index] = Chromosome(childrenGenes[1]);
+				break;
+			}
+		}
 
 
 	// TODO: Loop
