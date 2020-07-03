@@ -12,19 +12,46 @@
 using namespace std;
 using json = nlohmann::json;
 
-// Gene size
-const int GENE_SIZE = 4;
-
-// Selection size
-const int SEL_SIZE = 8;
-
-// Population size
-const int POP_SIZE = 10;
+/*
+   GENE_SIZE   -> How many selections. For example, " 0 3 2 2 " means 4 selections.
+	 SEL_SIZE    -> The space size for selection to occur. Refer to colours & colourNames variable below. 
+	                Number here should not be more than the number of elements in the variables.
+	 POP_SIZE    -> Population size, how many chromosomes per generation.
+	 CRSVR_COUNT ->The number of crossover points in a single chromosome, no use for now
+	 TOURNAMENT_SIZE  -> The number or values to take for tournament during parent selection via tournament.
+*/
+const int 
+	GENE_SIZE = 4,
+	SEL_SIZE = 8,
+	POP_SIZE = 10,
+	CRSVR_COUNT = 1,
+	TOURNAMENT_SIZE = 2
+;
 
 /*
-  Terminate when reached this number of cycles.
+	 DUP_GENE    -> If duplicates are accepted. If accepted, a chromosome can have more than one of the same gene. No use for now.
+	 OUTPUT      -> Whether to output stats of each generation.
+	 AUTO_LOOP   -> Whether to loop multiple experiments as fast as possible.
+	 FILE_OUTPUT -> Whether to output files. Recommended for this to be disable when AUTO_LOOP is true.
+	 MAX_CYCLES  Terminate when reached this number of cycles.
 */
-const int MAX_CYCLES = 100;
+const bool 
+	DUP_GENE = true,
+	OUTPUT = true,
+	AUTO_LOOP = true,
+	FILE_OUTPUT = true
+;
+
+
+/*
+	Rates of each function occurence used in this program.
+	MUT_RATE -> Mutation Rate
+	CRSVR_RATE -> Crossover Rate
+*/
+const double 
+  MUTATION_RATE = 0.5,
+	CRSVR_RATE = 0.5
+;
 
 /*
  Define available characters, with the following conversion convention:
@@ -56,26 +83,3 @@ const vector<string> colourNames = {
 	"Turquoise",
 	"Maroon"
 };
-
-/*
-	 If duplicates are accepted.
-	 if accepted, a chromosome can have more than one of the same gene.
-*/
-const bool DUP_GENE = true;
-
-/*
-	Rates of each function occurence used in this program.
-	MUT_RATE -> Mutation Rate
-	CRSVR_RATE -> Crossover Rate
-*/
-const double MUTATION_RATE = 0.5;
-const double CRSVR_RATE = 0.5;
-
-// The number of crossover points in a single chromosome
-const int CRSVR_COUNT = 1;
-
-// Whether to output intermediatery messages
-const bool OUTPUT = true;
-const bool AUTO_LOOP = false;
-const bool FILE_OUTPUT = false;
-const int TOURNAMENT_SIZE = 4;
