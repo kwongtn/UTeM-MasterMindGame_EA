@@ -12,6 +12,7 @@ int lowestGenExperiment = 0;
 int maxGen = numeric_limits<int>::min();
 int maxGenExperiment = 0;
 double maxFitnessHist = numeric_limits<double>::min();
+vector<int> histGenCount;
 
 // Function to calculate and return max fitness in the chromosomes
 double maxFitness(vector<Chromosome> chrs) {
@@ -150,11 +151,22 @@ int main()
 		vector<Chromosome> chromosomes;
 		for (int i = 0; i < POP_SIZE; i++) {
 			chromosomes.push_back(userSelection);
+
 		}
 
 		cout << "\nExperiment #" << experimentCount << endl;
-		if (experimentCount > 0) {
-			cout << "Average generations per experiment: " << totalGenerations / (experimentCount - 1) << endl;
+		if (experimentCount > 1) {
+			int avgGen = ceil(totalGenerations / (experimentCount - 1));
+			cout << "Average generations per experiment: " << avgGen << endl;
+			cout << "Experiments having the average generations: ";
+
+			for (int i = 0; i < histGenCount.size(); i++) {
+				if (histGenCount[i] == avgGen) {
+					cout << i << ", ";
+				}
+			}
+
+			cout << endl;
 
 		}
 		cout << "Lowest generation count: " << lowestGen << " @ " << lowestGenExperiment << endl;
@@ -368,6 +380,7 @@ int main()
 			lowestGen = generationCount;
 			lowestGenExperiment = experimentCount;
 		}
+		histGenCount.push_back(generationCount);
 		generationCount = 0;
 	}
 	cout << "Program end.";
