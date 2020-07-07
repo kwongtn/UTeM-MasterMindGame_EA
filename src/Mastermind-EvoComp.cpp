@@ -98,7 +98,14 @@ string fileNameGen() {
 
 int main()
 {
-
+	cout << "GENE_SIZE = " << GENE_SIZE << endl;
+	cout << "SEL_SIZE = " << SEL_SIZE << endl;
+	cout << "POP_SIZE = " << POP_SIZE << endl;
+	cout << "CRSVR_RATE = " << CRSVR_RATE << endl;
+	cout << "MUTATION_RATE = " << MUTATION_RATE << endl;
+	cout << "TOURNAMENT_SIZE = " << TOURNAMENT_SIZE << endl;
+	cout << "Possible Combinations = " << pow(SEL_SIZE, GENE_SIZE) << endl << endl;
+	pause();
 
 	unsigned short int generationCount = 0;
 	while (true) {
@@ -371,6 +378,12 @@ int main()
 			}
 
 		}
+
+		if (EXPER_COUNT == experimentCount) {
+			cout << "Reached present experiment count of " << EXPER_COUNT << ". ";
+			break;
+		}
+
 		maxFitnessHist = numeric_limits<double>::min();
 		if (generationCount > maxGen) {
 			maxGen = generationCount;

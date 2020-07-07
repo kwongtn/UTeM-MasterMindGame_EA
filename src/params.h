@@ -19,6 +19,7 @@ using json = nlohmann::json;
 	 POP_SIZE    -> Population size, how many chromosomes per generation.
 	 CRSVR_COUNT ->The number of crossover points in a single chromosome, no use for now
 	 TOURNAMENT_SIZE  -> The number or values to take for tournament during parent selection via tournament.
+	 EXPER_COUNT -> Number of experiments to run
 */
 const int 
 	GENE_SIZE = 4,
@@ -26,6 +27,7 @@ const int
 	POP_SIZE = 10,
 	CRSVR_COUNT = 1,
 	TOURNAMENT_SIZE = 2
+	EXPER_COUNT = 1000
 ;
 
 /*
