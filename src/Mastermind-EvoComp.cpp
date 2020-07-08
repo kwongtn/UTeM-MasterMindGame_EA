@@ -117,11 +117,11 @@ int main()
 		json stats = {};
 
 		// Open output file
-		ofstream outputCSV, outputJSON;
+		ofstream outputCSV_detailed, outputJSON;
 		string fileName = fileNameGen();
 		if (FILE_OUTPUT) {
-			outputCSV.open(fileName + ".csv");
-			if (outputCSV.is_open()) {
+			outputCSV_detailed.open(fileName + ".csv");
+			if (outputCSV_detailed.is_open()) {
 				cout << "CSV File Save Path : " << fileName << ".csv" << endl;
 			}
 			else {
@@ -258,9 +258,9 @@ int main()
 			if (FILE_OUTPUT) {
 				// Write stats and related values into csv file 
 				if (generationCount == 0) {
-					outputCSV << "Generation, MinFitness, MaxFitness, HistoricalMaxFitness, AvgFitness, Best Chromosome" << endl;
+					outputCSV_detailed << "Generation, MinFitness, MaxFitness, HistoricalMaxFitness, AvgFitness, Best Chromosome" << endl;
 				}
-				outputCSV << generationCount << ", "
+				outputCSV_detailed << generationCount << ", "
 					<< stats[generationCount]["minFitness"] << ", "
 					<< stats[generationCount]["maxFitness"] << ", "
 					<< maxFitnessHist << " , "
@@ -371,7 +371,7 @@ int main()
 		}
 		cout << "\rRuntime: " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) / 1000000.0 << " seconds. " << endl << endl;
 
-		outputCSV.close();
+		outputCSV_detailed.close();
 
 		cout << "Average generations per experiment: " << totalGenerations / experimentCount << endl;
 
