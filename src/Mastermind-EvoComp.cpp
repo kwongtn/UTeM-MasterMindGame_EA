@@ -120,9 +120,7 @@ int main()
 		ofstream outputCSV, outputJSON;
 		string fileName = fileNameGen();
 		if (FILE_OUTPUT) {
-
 			outputCSV.open(fileName + ".csv");
-			outputJSON.open(fileName + ".json");
 			if (outputCSV.is_open()) {
 				cout << "CSV File Save Path : " << fileName << ".csv" << endl;
 			}
@@ -130,13 +128,21 @@ int main()
 				cout << "CSV File Error." << endl;
 				pause();
 			}
-			if (outputJSON.is_open()) {
-				cout << "JSON File Save Path: " << fileName << ".json" << endl;
-				outputJSON.close();
+
+			if (JSON_OUTPUT) {
+				outputJSON.open(fileName + ".json");
+				if (outputJSON.is_open()) {
+					cout << "JSON File Save Path: " << fileName << ".json" << endl;
+					outputJSON.close();
+				}
+				else {
+					cout << "JSON File Error." << endl;
+					pause();
+				}
+
 			}
 			else {
-				cout << "JSON File Error." << endl;
-				pause();
+				cout << "JSON File Output disabled." << endl;
 			}
 
 		}
@@ -356,7 +362,7 @@ int main()
 		string temp = "";
 		cout << endl;
 		std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
-		if (FILE_OUTPUT) {
+		if (JSON_OUTPUT) {
 			// Write stats into JSON File
 			cout << "Writing into JSON File.";
 			outputJSON.open(fileName + ".json");
