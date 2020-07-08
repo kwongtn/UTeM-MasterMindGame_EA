@@ -308,7 +308,7 @@ int main()
 			childrenGenes[1] = chromosomes[parentIndex[1]].getGenes();
 
 			// Crossover
-			if (((rand() % 100) / 100) < CRSVR_RATE) {
+			if (rand() % 100 < CRSVR_RATE * 100) {
 				stats[generationCount]["crossover"] = true;
 				int crossoverPoint = rand() % GENE_SIZE;
 				for (int i = crossoverPoint; i < GENE_SIZE; i++) {
@@ -324,7 +324,7 @@ int main()
 
 			// Mutation
 			for (int i = 0; i < childrenGenes.size(); i++) {
-				if (((rand() % 100) / 100) < MUTATION_RATE) {
+				if (rand() % 100 < MUTATION_RATE * 100) {
 					string mutationString = "mutation" + i;
 					stats[generationCount][mutationString] = true;
 					childrenGenes[i][rand() % GENE_SIZE] = colors[rand() % SEL_SIZE];
