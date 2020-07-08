@@ -145,3 +145,29 @@ inline std::string returnDatetimeString(bool includeDashes = false)
 inline string returnString(json myString) {
 	return myString;
 }
+
+template <typename T>
+inline long double standardDeviation(vector<T> values) {
+	values.shrink_to_fit();
+
+	long double mean = 0;
+	long double numerator = 0;
+
+	T sum = 0;
+
+	// Calculate sum
+	for (T value : values) {
+		sum += value;
+	}
+
+	// Calculate mean
+	mean = sum / values.size();
+
+	// Calculate numerator
+	for (T value : values) {
+		numerator += pow((value - mean), 2);
+	}
+
+	// Calculate standard deviation and returns it
+	return sqrt(numerator / values.size());
+}
