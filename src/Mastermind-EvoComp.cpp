@@ -251,10 +251,8 @@ int main()
 
 			}
 			else {
-				if (!AUTO_LOOP) {
-					cout << "\rGeneration " << generationCount << ".";
+				cout << "\rGeneration " << generationCount << ".";
 
-				}
 			}
 
 			if (FILE_OUTPUT) {
