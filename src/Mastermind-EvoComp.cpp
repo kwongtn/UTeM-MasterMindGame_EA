@@ -14,6 +14,9 @@ int maxGenExperiment = 0;
 double maxFitnessHist = numeric_limits<double>::min();
 vector<int> histGenCount(EXPER_COUNT);
 
+long double totalTime = 0;
+vector<long double> histTimeUse(EXPER_COUNT);
+
 // Function to calculate and return max fitness in the chromosomes
 double maxFitness(vector<Chromosome> chrs) {
 	double maxVal = numeric_limits<double>::min();
@@ -84,8 +87,8 @@ double avgFitness(vector<Chromosome> chrs) {
 	return totalFitness / POP_SIZE;
 }
 
-string fileNameGen() {
-	string myString = "../results/" + returnDatetimeString() + "-";
+string counterString() {
+	string myString = "";
 	if (experimentCount < 100) {
 		myString += "0";
 	}
@@ -96,8 +99,54 @@ string fileNameGen() {
 	return myString;
 }
 
+inline string fileNameGen() {
+	string myString = "../results/" + returnDatetimeString() + "-";
+	return myString;
+}
+
+
 int main()
 {
+
+	unsigned short int generationCount = 0;
+	string
+		globalFilename = "../results/globalResults.csv",
+		localFileName = fileNameGen() + "summary.csv",
+		trackerFileName = "../results/tracker.txt";
+
+	// Open tracker
+	ifstream trackerIn;
+	ofstream trackerOut;
+	bool trackerExists = false;
+	trackerIn.open(trackerFileName);
+	if (!trackerIn.is_open()) {
+		cout << "Tracker file does not exist, creating..." << endl;
+		trackerOut.open(trackerFileName);
+		trackerOut << "Do not remove this file, else the globalResults will be overwritten on next run." << endl;
+		trackerOut.close();
+	}
+	else {
+		trackerExists = true;
+	}
+
+	trackerIn.close();
+
+	// Open global file
+	ofstream outputCSV_global,
+		outputCSV_summary;
+	if (trackerExists) {
+		outputCSV_global.open(globalFilename, ofstream::app);
+
+	}
+	else {
+		outputCSV_global.open(globalFilename);
+		outputCSV_global << "timestamp, populationSize, maxGen, minGen, sdGen, avgGen, maxTime, minTime, sdTime, avgTime, mutationRate, crossoverRate, experimentCount" << endl;
+	}
+
+	outputCSV_summary.open(localFileName);
+	outputCSV_summary << "timestamp, popSize, gen, time, mutationRate, crossoverRate, experimentCount" << endl;
+
+	srand((unsigned int)time(NULL));
 	cout << "GENE_SIZE = " << GENE_SIZE << endl;
 	cout << "SEL_SIZE = " << SEL_SIZE << endl;
 	cout << "POP_SIZE = " << POP_SIZE << endl;
@@ -107,18 +156,19 @@ int main()
 	cout << "Possible Combinations = " << pow(SEL_SIZE, GENE_SIZE) << endl << endl;
 	pause();
 
-	unsigned short int generationCount = 0;
 	while (true) {
 		clearScreen();
-		//srand((unsigned int)time(NULL));
 
 		array<int, GENE_SIZE> userSelection;
 
 		json stats = {};
 
 		// Open output file
-		ofstream outputCSV_detailed, outputJSON;
-		string fileName = fileNameGen();
+		ofstream
+			outputCSV_detailed,
+			outputJSON
+			;
+		string fileName = fileNameGen() + counterString();
 		if (FILE_OUTPUT) {
 			outputCSV_detailed.open(fileName + ".csv");
 			if (outputCSV_detailed.is_open()) {
@@ -129,6 +179,7 @@ int main()
 				pause();
 			}
 
+			// Check for JSON Output toggle
 			if (JSON_OUTPUT) {
 				outputJSON.open(fileName + ".json");
 				if (outputJSON.is_open()) {
@@ -144,6 +195,7 @@ int main()
 			else {
 				cout << "JSON File Output disabled." << endl;
 			}
+
 
 		}
 		else {
@@ -244,7 +296,7 @@ int main()
 				cout << setw(15) << right << stats[generationCount]["gen"]
 					<< setw(25) << right << stod(to_string(stats[generationCount]["minFitness"]))
 					<< setw(25) << right << stod(to_string(stats[generationCount]["maxFitness"]))
-					<< setw(25) << right << stod(to_string(stats[generationCount]["avgFitness"]))
+					<< setw(25) << right << stod(to_string(round(stats[generationCount]["avgFitness"] * 1000) / 1000))
 					<< "              "
 					<< setw(25) << left << returnString(stats[generationCount]["bestChr"])
 					<< endl;
@@ -264,7 +316,7 @@ int main()
 					<< stats[generationCount]["minFitness"] << ", "
 					<< stats[generationCount]["maxFitness"] << ", "
 					<< maxFitnessHist << " , "
-					<< stats[generationCount]["avgFitness"] << ", "
+					<< round(stats[generationCount]["avgFitness"] * 100000) / 100000 << ", "
 					<< returnString(stats[generationCount]["bestChr"])
 					<< endl;
 
@@ -369,11 +421,24 @@ int main()
 			outputJSON.close();
 
 		}
-		cout << "\rRuntime: " << (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) / 1000000.0 << " seconds. " << endl << endl;
+
+		long double runtime = (std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()) / 1000000.0;
+		cout << "\rRuntime: " << runtime << " seconds. " << endl << endl;
 
 		outputCSV_detailed.close();
 
 		cout << "Average generations per experiment: " << totalGenerations / experimentCount << endl;
+
+		// Write into localfile summary
+		outputCSV_summary
+			<< returnDatetimeString(true) << ", "
+			<< POP_SIZE << ", "
+			<< generationCount << ", "
+			<< runtime << ", "
+			<< MUTATION_RATE << ", "
+			<< CRSVR_RATE
+			<< endl
+			;
 
 		cout << "\nExperiment #" << experimentCount << " end. ";
 		if (!AUTO_LOOP) {
@@ -398,10 +463,34 @@ int main()
 			lowestGen = generationCount;
 			lowestGenExperiment = experimentCount;
 		}
+
+		totalTime += runtime;
+		histTimeUse[experimentCount - 1] = runtime;
 		histGenCount[experimentCount - 1] = generationCount;
 		experimentCount++;
 		generationCount = 0;
 	}
+	outputCSV_summary.close();
+
+
+	// Write into global results
+	outputCSV_global
+		<< returnDatetimeString(true) << ", "
+		<< POP_SIZE << ", "
+		<< maxGen << ", "
+		<< lowestGen << ", "
+		<< standardDeviation(histGenCount) << ", "
+		<< totalGenerations / EXPER_COUNT << ", "
+		<< getMax(histTimeUse) << ", "
+		<< getMin(histTimeUse) << ", "
+		<< standardDeviation(histTimeUse) << ", "
+		<< totalTime / EXPER_COUNT << ", "
+		<< MUTATION_RATE << ", "
+		<< CRSVR_RATE << ", "
+		<< EXPER_COUNT << endl
+		;
+	outputCSV_global.close();
+
 	cout << "Program end.";
 	pause();
 }

@@ -128,7 +128,7 @@ inline std::string returnDatetimeString(bool includeDashes = false)
 	if (includeDashes) { ss << "-"; }
 	if (nowTime.tm_mday < 10) { ss << "0"; }
 	ss << nowTime.tm_mday;
-	if (includeDashes) { ss << "-"; }
+	if (includeDashes) { ss << " "; }
 	if (nowTime.tm_hour < 10) { ss << "0"; }
 	ss << nowTime.tm_hour;
 	if (includeDashes) { ss << ":"; }
@@ -170,4 +170,32 @@ inline long double standardDeviation(vector<T> values) {
 
 	// Calculate standard deviation and returns it
 	return sqrt(numerator / values.size());
+}
+
+template <typename T>
+inline T getMin(vector<T> myVector) {
+	myVector.shrink_to_fit();
+	T temp = numeric_limits<T>::max();
+
+	for (T value : myVector) {
+		if (value < temp && value != 0) {
+			temp = value;
+		}
+	}
+
+	return temp;
+}
+
+template <typename T>
+inline T getMax(vector<T> myVector) {
+	myVector.shrink_to_fit();
+	T temp = numeric_limits<T>::min();
+
+	for (T value : myVector) {
+		if (value > temp) {
+			temp = value;
+		}
+	}
+
+	return temp;
 }

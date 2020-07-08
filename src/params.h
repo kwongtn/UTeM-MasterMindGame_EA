@@ -16,18 +16,19 @@ using json = nlohmann::json;
    GENE_SIZE   -> How many selections. For example, " 0 3 2 2 " means 4 selections.
 	 SEL_SIZE    -> The space size for selection to occur. Refer to colours & colourNames variable below. 
 	                Number here should not be more than the number of elements in the variables.
-	 POP_SIZE    -> Population size, how many chromosomes per generation.
+	 POP_SIZE    -> Population size, how many chromosomes per generation. Recommended 30 for small genes.
 	 CRSVR_COUNT ->The number of crossover points in a single chromosome, no use for now
 	 TOURNAMENT_SIZE  -> The number or values to take for tournament during parent selection via tournament.
 	 EXPER_COUNT -> Number of experiments to run
 */
 const int 
-	GENE_SIZE = 4,
-	SEL_SIZE = 8,
-	POP_SIZE = 10,
+	GENE_SIZE = 5,
+	SEL_SIZE = 10,
+	POP_SIZE = 30,
 	CRSVR_COUNT = 1,
-	TOURNAMENT_SIZE = 2
-	EXPER_COUNT = 1000
+	TOURNAMENT_SIZE = POP_SIZE / 5,
+	MAX_CYCLES = 100000,
+	EXPER_COUNT = 3
 ;
 
 /*
@@ -39,9 +40,9 @@ const int
 */
 const bool 
 	DUP_GENE = true,
-	OUTPUT = true,
+	OUTPUT = false,
 	AUTO_LOOP = true,
-	FILE_OUTPUT = true
+	FILE_OUTPUT = true,
 	JSON_OUTPUT = false
 ;
 
