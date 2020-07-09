@@ -23,14 +23,14 @@ using json = nlohmann::json;
 	 REPLACEMENT_COUNT  -> How many chromosomes to be replaced by children, must be a multiplier of 2
 */
 const int 
-	GENE_SIZE = 5,
+	GENE_SIZE = 15,
 	SEL_SIZE = 10,
 	POP_SIZE = 30,
-	CRSVR_COUNT = 1,
-	TOURNAMENT_SIZE = POP_SIZE / 5,
+	CRSVR_COUNT = 3,
+	TOURNAMENT_SIZE = 6,
 	MAX_CYCLES = 100000,
-	EXPER_COUNT = 3
-	REPLACEMENT_COUNT = POP_SIZE / 2 + 1
+	EXPER_COUNT = 100,
+	REPLACEMENT_COUNT = 16
 ;
 
 static_assert(REPLACEMENT_COUNT % 2 == 0, "REPLACEMENT_COUNT must be a multiplier of 2.");
@@ -59,8 +59,8 @@ const bool
 	CRSVR_RATE -> Crossover Rate
 */
 const double 
-  MUTATION_RATE = 0.5,
-	CRSVR_RATE = 0.5
+  MUTATION_RATE = 0.1,
+	CRSVR_RATE = 0.9
 ;
 static_assert(MUTATION_RATE < 1, "MUTATION_RATE must not be larger than 1.");
 static_assert(CRSVR_RATE < 1, "CRSVR_RATE must not be larger than 1.");
