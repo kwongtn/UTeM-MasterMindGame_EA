@@ -33,6 +33,9 @@ const int
 	REPLACEMENT_COUNT = POP_SIZE / 2 + 1
 ;
 
+static_assert(REPLACEMENT_COUNT % 2 == 0, "REPLACEMENT_COUNT must be a multiplier of 2.");
+static_assert(REPLACEMENT_COUNT < POP_SIZE, "REPLACEMENT_COUNT must not be larger than POP_SIZE.");
+
 /*
 	 DUP_GENE    -> If duplicates are accepted. If accepted, a chromosome can have more than one of the same gene. No use for now.
 	 OUTPUT      -> Whether to output stats of each generation.
@@ -58,6 +61,8 @@ const double
   MUTATION_RATE = 0.5,
 	CRSVR_RATE = 0.5
 ;
+static_assert(MUTATION_RATE < 1, "MUTATION_RATE must not be larger than 1.");
+static_assert(CRSVR_RATE < 1, "CRSVR_RATE must not be larger than 1.");
 
 /*
  Define available characters, with the following conversion convention:
