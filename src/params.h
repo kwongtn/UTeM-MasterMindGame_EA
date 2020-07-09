@@ -17,7 +17,7 @@ using json = nlohmann::json;
 	 SEL_SIZE    -> The space size for selection to occur. Refer to colours & colourNames variable below. 
 	                Number here should not be more than the number of elements in the variables.
 	 POP_SIZE    -> Population size, how many chromosomes per generation. Recommended 30 for small genes.
-	 CRSVR_COUNT ->The number of crossover points in a single chromosome, no use for now
+	 CRSVR_COUNT ->The number of crossover points in a single chromosome.
 	 TOURNAMENT_SIZE  -> The number or values to take for tournament during parent selection via tournament.
 	 EXPER_COUNT -> Number of experiments to run
 	 REPLACEMENT_COUNT  -> How many chromosomes to be replaced by children, must be a multiplier of 2

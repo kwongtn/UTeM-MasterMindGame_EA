@@ -372,11 +372,27 @@ int main()
 				// Crossover
 				if (rand() % 100 < CRSVR_RATE * 100) {
 					stats[generationCount]["crossover"] = true;
-					int crossoverPoint = rand() % GENE_SIZE;
-					for (int i = crossoverPoint; i < GENE_SIZE; i++) {
-						int temp = childrenGenes[0][i];
-						childrenGenes[0][i] = childrenGenes[1][i];
-						childrenGenes[1][i] = temp;
+					int crsvrs = rand() % CRSVR_COUNT + 1;
+
+					// Determining crossover points
+					vector<int> crsvrPoints;
+					for (int i = 0; i < crsvrs; i++) {
+						int temp = rand() % GENE_SIZE;
+						if (i != 0) {
+							while (checkExistInArray(crsvrPoints, temp)) {
+								temp = rand() % GENE_SIZE;
+							}
+						}
+
+						crsvrPoints.push_back(temp);
+
+					}
+
+					for (int i = 0; i < crsvrs; i++) {
+						for (int crsvrCount = crsvrPoints[i]; crsvrCount < GENE_SIZE; crsvrCount++) {
+							swap(childrenGenes[0][crsvrCount], childrenGenes[1][crsvrCount]);
+						}
+
 					}
 
 				}
