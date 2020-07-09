@@ -305,7 +305,10 @@ int main()
 
 			}
 			else {
-				cout << "\rGeneration " << generationCount << ".";
+				if (!(generationCount % 10)) {
+					cout << "\rGeneration " << generationCount << ".";
+
+				}
 
 			}
 
@@ -398,6 +401,7 @@ int main()
 				}
 				else {
 					stats[generationCount]["crossover"] = false;
+
 				}
 
 				// Mutation
