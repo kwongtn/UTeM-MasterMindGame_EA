@@ -48,7 +48,8 @@ const bool
 	OUTPUT = false,
 	AUTO_LOOP = true,
 	FILE_OUTPUT = true,
-	JSON_OUTPUT = false
+	JSON_OUTPUT = false,
+	EXPRESS_MODE = true
 ;
 
 

@@ -20,8 +20,11 @@ inline void printLine(int length = 30, char character = '=') {
 
 // Prompts the user to input anything to continue
 inline void pause() {
-	cout << endl;
-	system("pause");
+	if (!EXPRESS_MODE) {
+		cout << endl;
+		system("pause");
+
+	}
 }
 
 // Clears the screen
