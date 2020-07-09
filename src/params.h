@@ -20,6 +20,7 @@ using json = nlohmann::json;
 	 CRSVR_COUNT ->The number of crossover points in a single chromosome, no use for now
 	 TOURNAMENT_SIZE  -> The number or values to take for tournament during parent selection via tournament.
 	 EXPER_COUNT -> Number of experiments to run
+	 REPLACEMENT_COUNT  -> How many chromosomes to be replaced by children, must be a multiplier of 2
 */
 const int 
 	GENE_SIZE = 5,
@@ -29,6 +30,7 @@ const int
 	TOURNAMENT_SIZE = POP_SIZE / 5,
 	MAX_CYCLES = 100000,
 	EXPER_COUNT = 3
+	REPLACEMENT_COUNT = POP_SIZE / 2 + 1
 ;
 
 /*

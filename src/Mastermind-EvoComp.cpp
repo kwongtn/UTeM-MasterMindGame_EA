@@ -140,11 +140,11 @@ int main()
 	}
 	else {
 		outputCSV_global.open(globalFilename);
-		outputCSV_global << "timestamp, populationSize, maxGen, minGen, sdGen, avgGen, maxTime, minTime, sdTime, avgTime, mutationRate, crossoverRate, experimentCount" << endl;
+		outputCSV_global << "timestamp, populationSize, maxGen, minGen, sdGen, avgGen, maxTime, minTime, sdTime, avgTime, mutationRate, crossoverRate, experimentCount, replacementRate, replacementCount" << endl;
 	}
 
 	outputCSV_summary.open(localFileName);
-	outputCSV_summary << "timestamp, popSize, gen, time, mutationRate, crossoverRate, experimentCount" << endl;
+	outputCSV_summary << "timestamp, popSize, gen, time, mutationRate, crossoverRate, experimentCount, replacementRate, replacementCount" << endl;
 
 	srand((unsigned int)time(NULL));
 	cout << "GENE_SIZE = " << GENE_SIZE << endl;
@@ -153,6 +153,8 @@ int main()
 	cout << "CRSVR_RATE = " << CRSVR_RATE << endl;
 	cout << "MUTATION_RATE = " << MUTATION_RATE << endl;
 	cout << "TOURNAMENT_SIZE = " << TOURNAMENT_SIZE << endl;
+	cout << "REPLACEMENT_RATE = " << (double)REPLACEMENT_COUNT / POP_SIZE << endl;
+	cout << "REPLACEMENT_COUNT = " << REPLACEMENT_COUNT << endl;
 	cout << "Possible Combinations = " << pow(SEL_SIZE, GENE_SIZE) << endl << endl;
 	pause();
 
@@ -333,76 +335,96 @@ int main()
 				break;
 			}
 
-			// Parent selection
-			array<int, 2> parentIndex;
-			for (int i = 0; i < 2; i++) {
-				vector<int> tournaments;
-				tournaments.push_back(rand() % POP_SIZE);
-				for (int j = 0; j < TOURNAMENT_SIZE; j++) {
-					while (true) {
-						int tournament = rand() % POP_SIZE;
-						if (!checkExistInArray(tournaments, tournament)) {
-							tournaments.push_back(tournament);
-							break;
+			// Getting offspring with respect to REPLACEMENT_COUNT
+			vector<Chromosome> offspring;
+			for (int offspringCounter = 0; offspringCounter < REPLACEMENT_COUNT; offspringCounter++) {
+				// Parent selection
+				array<int, 2> parentIndex;
+				for (int i = 0; i < 2; i++) {
+					vector<int> tournaments;
+					tournaments.push_back(rand() % POP_SIZE);
+					for (int j = 0; j < TOURNAMENT_SIZE; j++) {
+						while (true) {
+							int tournament = rand() % POP_SIZE;
+							if (!checkExistInArray(tournaments, tournament)) {
+								tournaments.push_back(tournament);
+								break;
+							}
 						}
 					}
-				}
 
-				double bestFitInd = numeric_limits<double>::min();
-				for (int j : tournaments) {
-					if (chromosomes[j].getFitness() > chromosomes[bestFitInd].getFitness()) {
-						bestFitInd = j;
+					double bestFitInd = numeric_limits<double>::min();
+					for (int j : tournaments) {
+						if (chromosomes[j].getFitness() > chromosomes[bestFitInd].getFitness()) {
+							bestFitInd = j;
+						}
 					}
+
+					parentIndex[i] = bestFitInd;
+
+
 				}
 
-				parentIndex[i] = bestFitInd;
+				array<array<int, GENE_SIZE>, 2> childrenGenes;
+				childrenGenes[0] = chromosomes[parentIndex[0]].getGenes();
+				childrenGenes[1] = chromosomes[parentIndex[1]].getGenes();
 
-
-			}
-
-			array<array<int, GENE_SIZE>, 2> childrenGenes;
-			childrenGenes[0] = chromosomes[parentIndex[0]].getGenes();
-			childrenGenes[1] = chromosomes[parentIndex[1]].getGenes();
-
-			// Crossover
-			if (rand() % 100 < CRSVR_RATE * 100) {
-				stats[generationCount]["crossover"] = true;
-				int crossoverPoint = rand() % GENE_SIZE;
-				for (int i = crossoverPoint; i < GENE_SIZE; i++) {
-					int temp = childrenGenes[0][i];
-					childrenGenes[0][i] = childrenGenes[1][i];
-					childrenGenes[1][i] = temp;
-				}
-
-			}
-			else {
-				stats[generationCount]["crossover"] = false;
-			}
-
-			// Mutation
-			for (int i = 0; i < childrenGenes.size(); i++) {
-				if (rand() % 100 < MUTATION_RATE * 100) {
-					string mutationString = "mutation" + i;
-					stats[generationCount][mutationString] = true;
-					childrenGenes[i][rand() % GENE_SIZE] = colors[rand() % SEL_SIZE];
+				// Crossover
+				if (rand() % 100 < CRSVR_RATE * 100) {
+					stats[generationCount]["crossover"] = true;
+					int crossoverPoint = rand() % GENE_SIZE;
+					for (int i = crossoverPoint; i < GENE_SIZE; i++) {
+						int temp = childrenGenes[0][i];
+						childrenGenes[0][i] = childrenGenes[1][i];
+						childrenGenes[1][i] = temp;
+					}
 
 				}
 				else {
-					string mutationString = "mutation" + i;
-					stats[generationCount][mutationString] = false;
+					stats[generationCount]["crossover"] = false;
+				}
+
+				// Mutation
+				for (int i = 0; i < childrenGenes.size(); i++) {
+					if (rand() % 100 < MUTATION_RATE * 100) {
+						string mutationString = "mutation" + i;
+						stats[generationCount][mutationString] = true;
+						childrenGenes[i][rand() % GENE_SIZE] = colors[rand() % SEL_SIZE];
+
+					}
+					else {
+						string mutationString = "mutation" + i;
+						stats[generationCount][mutationString] = false;
+
+					}
 
 				}
+
+				offspring.push_back(Chromosome(userSelection, childrenGenes[0]));
+				offspring.push_back(Chromosome(userSelection, childrenGenes[1]));
 
 			}
 
-			// Select and forfeit chromosomes, replace with children. The worst and one other random chromosome will be replaced.
-			chromosomes[worstFitnessIndex(chromosomes)] = Chromosome(userSelection, childrenGenes[0]);
-			while (true) {
-				int index = rand() % POP_SIZE;
-				if (index != worstFitnessIndex(chromosomes)) {
-					chromosomes[index] = Chromosome(userSelection, childrenGenes[1]);
-					break;
+			// Sort Chromosomes
+			chromosomes = sortChromosome(chromosomes);
+
+			// Set chromosomes to replace
+			vector<int> replacement;
+			replacement.push_back(0); // To replace the worst chromosome
+			replacement.push_back(1); // To replace the 2nd worst chromosome
+
+			// Set to replace remaining chromosomes randomly
+			for (int i = 2; i < REPLACEMENT_COUNT; i++) {
+				int temp = rand() % POP_SIZE;
+				while (checkExistInArray(replacement, temp)) {
+					temp = rand() % POP_SIZE;
 				}
+				replacement.push_back(temp);
+			}
+
+			// Replacing
+			for (int i = 0; i < REPLACEMENT_COUNT; i++) {
+				chromosomes[replacement[i]] = offspring[i];
 			}
 
 			// Loop
@@ -436,7 +458,10 @@ int main()
 			<< generationCount << ", "
 			<< runtime << ", "
 			<< MUTATION_RATE << ", "
-			<< CRSVR_RATE
+			<< CRSVR_RATE << ", "
+			<< experimentCount << ", "
+			<< (double)REPLACEMENT_COUNT / POP_SIZE << ", "
+			<< REPLACEMENT_COUNT
 			<< endl
 			;
 
@@ -487,7 +512,10 @@ int main()
 		<< totalTime / EXPER_COUNT << ", "
 		<< MUTATION_RATE << ", "
 		<< CRSVR_RATE << ", "
-		<< EXPER_COUNT << endl
+		<< EXPER_COUNT << ", "
+		<< (double)REPLACEMENT_COUNT / POP_SIZE << ", "
+		<< REPLACEMENT_COUNT
+		<< endl
 		;
 	outputCSV_global.close();
 

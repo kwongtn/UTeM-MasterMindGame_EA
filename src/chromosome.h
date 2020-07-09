@@ -118,3 +118,24 @@ string Chromosome::getGenesAsString() {
 	myString.pop_back();
 	return myString;
 }
+
+vector<Chromosome> sortChromosome(vector<Chromosome> chrs) {
+	int swapCount = 0;
+	while (true) {
+		for (int i = 0; i < chrs.size(); i++) {
+			if ((i != chrs.size() - 2) && (i != chrs.size() - 1) && (chrs[i].getFitness() > chrs[i + 1].getFitness())) {
+				swap(chrs[i], chrs[i + 1]);
+				swapCount++;
+			}
+		}
+		if (swapCount == 0) {
+			return chrs;
+		}
+		else {
+			swapCount = 0;
+			continue;
+		}
+
+	}
+
+}
