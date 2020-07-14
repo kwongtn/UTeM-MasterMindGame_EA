@@ -84,7 +84,7 @@ double avgFitness(vector<Chromosome> chrs) {
 		totalFitness += chr.getFitness();
 	}
 
-	return totalFitness / POP_SIZE;
+	return round((totalFitness / POP_SIZE) * 1000) / 1000;
 }
 
 string counterString() {
@@ -321,7 +321,7 @@ int main()
 					<< stats[generationCount]["minFitness"] << ", "
 					<< stats[generationCount]["maxFitness"] << ", "
 					<< maxFitnessHist << " , "
-					<< round(stats[generationCount]["avgFitness"] * 100000) / 100000 << ", "
+					<< stats[generationCount]["avgFitness"] << ", "
 					<< returnString(stats[generationCount]["bestChr"])
 					<< endl;
 
