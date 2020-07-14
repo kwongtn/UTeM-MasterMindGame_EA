@@ -140,7 +140,7 @@ int main()
 	}
 	else {
 		outputCSV_global.open(globalFilename);
-		outputCSV_global << "timestamp, populationSize, maxGen, minGen, sdGen, avgGen, maxTime, minTime, sdTime, avgTime, mutationRate, crossoverRate, experimentCount, replacementRate, replacementCount" << endl;
+		outputCSV_global << "timestamp, populationSize, maxGen, minGen, sdGen, avgGen, maxTime, minTime, sdTime, avgTime, mutationRate, crossoverRate, experimentCount, replacementRate, replacementCount, crossoverCount, tournamentSize" << endl;
 	}
 
 	outputCSV_summary.open(localFileName);
@@ -534,7 +534,9 @@ int main()
 		<< CRSVR_RATE << ", "
 		<< EXPER_COUNT << ", "
 		<< (double)REPLACEMENT_COUNT / POP_SIZE << ", "
-		<< REPLACEMENT_COUNT
+		<< REPLACEMENT_COUNT << ", "
+		<< CRSVR_COUNT << ", "
+		<< TOURNAMENT_SIZE
 		<< endl
 		;
 	outputCSV_global.close();
