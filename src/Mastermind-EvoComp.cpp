@@ -5,14 +5,14 @@
 #include "utils.h"
 #include "chromosome.h"
 
-unsigned short int experimentCount = 1;
-int totalGenerations = 0;
-int lowestGen = numeric_limits<int>::max();
-int lowestGenExperiment = 0;
-int maxGen = numeric_limits<int>::min();
-int maxGenExperiment = 0;
+unsigned int experimentCount = 1;
+unsigned int totalGenerations = 0;
+unsigned int lowestGen = numeric_limits<unsigned int>::max();
+unsigned int lowestGenExperiment = 0;
+unsigned int maxGen = numeric_limits<unsigned int>::min();
+unsigned int maxGenExperiment = 0;
 double maxFitnessHist = numeric_limits<double>::min();
-vector<int> histGenCount(EXPER_COUNT);
+vector<unsigned int> histGenCount(EXPER_COUNT);
 
 long double totalTime = 0;
 vector<long double> histTimeUse(EXPER_COUNT);
