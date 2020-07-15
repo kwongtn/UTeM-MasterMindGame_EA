@@ -34,7 +34,7 @@ const int
 ;
 
 static_assert(REPLACEMENT_COUNT % 2 == 0, "REPLACEMENT_COUNT must be a multiplier of 2.");
-static_assert(REPLACEMENT_COUNT < POP_SIZE, "REPLACEMENT_COUNT must not be larger than POP_SIZE.");
+static_assert(REPLACEMENT_COUNT <= POP_SIZE, "REPLACEMENT_COUNT must not be larger than POP_SIZE.");
 
 /*
 	 DUP_GENE    -> If duplicates are accepted. If accepted, a chromosome can have more than one of the same gene. No use for now.
