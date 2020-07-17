@@ -282,6 +282,12 @@ int main()
 					});
 			}
 
+			// Place fitness into array (temporary fix)
+			vector<double> fitnessArr;
+			for (int i = 0; i < chromosomes.size(); i++) {
+				fitnessArr.push_back(chromosomes[i].getFitness());
+			}
+
 
 			// Write stats to variable
 			stats.push_back({
@@ -289,6 +295,7 @@ int main()
 				{"avgFitness", avgFitness(chromosomes)},
 				{"minFitness", minFitness(chromosomes)},
 				{"maxFitness", maxFitness(chromosomes)},
+				{"sd", standardDeviation(fitnessArr)},
 				{"bestChr", chromosomes[bestFitnessIndex(chromosomes)].getGenesAsString()},
 				{"worstChr", chromosomes[worstFitnessIndex(chromosomes)].getGenesAsString()},
 				{"chrs", chrList}
@@ -306,7 +313,7 @@ int main()
 			}
 			else {
 				if (!(generationCount % 10)) {
-					cout << "\rGeneration " << generationCount << ".";
+					cout << "\rGeneration " << setw(10) << left << generationCount << ".";
 
 				}
 
@@ -315,13 +322,14 @@ int main()
 			if (FILE_OUTPUT) {
 				// Write stats and related values into csv file 
 				if (generationCount == 0) {
-					outputCSV_detailed << "Generation, MinFitness, MaxFitness, HistoricalMaxFitness, AvgFitness, Best Chromosome" << endl;
+					outputCSV_detailed << "Generation, MinFitness, MaxFitness, HistoricalMaxFitness, AvgFitness, Standard Deviation, Best Chromosome" << endl;
 				}
 				outputCSV_detailed << generationCount << ", "
 					<< stats[generationCount]["minFitness"] << ", "
 					<< stats[generationCount]["maxFitness"] << ", "
 					<< maxFitnessHist << " , "
 					<< stats[generationCount]["avgFitness"] << ", "
+					<< stats[generationCount]["sd"] << ", "
 					<< returnString(stats[generationCount]["bestChr"])
 					<< endl;
 
