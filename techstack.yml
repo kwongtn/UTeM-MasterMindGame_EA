@@ -1,0 +1,65 @@
+repo_name: kwongtn/UTeM-MasterMindGame_EA
+report_id: 88c8e027953a44b05848ee9ebb6705ef
+version: 0.1
+repo_type: Public
+timestamp: '2024-02-29T18:14:10+00:00'
+requested_by: kwongtn
+provider: github
+branch: master
+detected_tools_count: 5
+tools:
+- name: C++
+  description: Has imperative, object-oriented and generic programming features, while
+    also providing the facilities for low level memory manipulation
+  website_url: http://www.cplusplus.com/
+  open_source: true
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/1049/cplusplus.png
+  detection_source_url: https://github.com/kwongtn/UTeM-MasterMindGame_EA
+  detection_source: Repo Metadata
+- name: Git
+  description: Fast, scalable, distributed revision control system
+  website_url: http://git-scm.com/
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Version Control System
+  image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/kwongtn/UTeM-MasterMindGame_EA
+  detection_source: Repo Metadata
+- name: Visual Studio
+  description: State-of-the-art tools and services that you can use to create great
+    apps for devices, the cloud, and everything in between.
+  website_url: http://msdn.microsoft.com/en-us/vstudio/aa718325.aspx
+  open_source: false
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Integrated Development Environment
+  image_url: https://img.stackshare.io/service/1451/SR2hUhQN.png
+  detection_source_url: https://github.com/kwongtn/UTeM-MasterMindGame_EA/blob/master/src/Mastermind-EvoComp.sln
+  detection_source: src/Mastermind-EvoComp.sln
+  last_updated_by: KwongTN
+  last_updated_on: 2020-06-30 13:44:07.000000000 Z
+- name: PowerShell
+  description: A task automation and configuration management framework
+  website_url: https://docs.microsoft.com/en-us/powershell/
+  open_source: false
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/3681/powershell-logo.png
+  detection_source_url: https://github.com/kwongtn/UTeM-MasterMindGame_EA
+  detection_source: Repo Metadata
+- name: Shell
+  description: A shell is a text-based terminal, used for manipulating programs and
+    files. Shell scripts typically manage program execution.
+  website_url: https://en.wikipedia.org/wiki/Shell_script
+  open_source: false
+  hosted_saas: false
+  category: Languages & Frameworks
+  sub_category: Languages
+  image_url: https://img.stackshare.io/service/4631/default_c2062d40130562bdc836c13dbca02d318205a962.png
+  detection_source_url: https://github.com/kwongtn/UTeM-MasterMindGame_EA
+  detection_source: Repo Metadata
